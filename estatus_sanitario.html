@@ -98,10 +98,29 @@ button,input,select{font:inherit;color:inherit}
 .universe b{color:var(--ink);font-size:1.1rem}
 .fb-actions{display:flex;gap:8px;flex-wrap:wrap}
 .fb-toggle{display:none}
-.fb-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;box-shadow:var(--shadow)}
+.fb-grid{display:grid;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr));gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;box-shadow:var(--shadow)}
 .field{display:flex;flex-direction:column;gap:4px;min-width:0}
 .field>label,.field>span{font-size:.74rem;font-weight:700;color:var(--ink-2);letter-spacing:.02em}
 .field select,.field input,.cb input{width:100%;min-height:40px;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:6px 10px;min-width:0}
+.fb-sep{grid-column:1/-1;display:flex;align-items:center;gap:10px;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--brand-ink);margin-top:2px}
+.fb-sep::after{content:"";flex:1;border-top:1px dashed var(--line)}
+.fb-sep[hidden]{display:none!important}
+.ms-btn{width:100%;min-height:40px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);padding:6px 30px 6px 10px;text-align:left;cursor:pointer;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:inherit}
+.ms-btn::after{content:"";position:absolute;right:12px;top:50%;width:7px;height:7px;border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);transform:translateY(-70%) rotate(45deg)}
+.ms-btn:hover:not(:disabled){border-color:var(--brand)}
+.ms-btn:disabled{background:var(--surface-2);color:var(--ink-3);cursor:not-allowed}
+.field.active .ms-btn{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand);font-weight:700}
+.ms-pop{position:fixed;z-index:1200;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.22);display:flex;flex-direction:column;overflow:hidden}
+.ms-pop[hidden]{display:none!important}
+.ms-q{margin:8px;min-height:36px;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:4px 10px}
+.ms-list{overflow:auto;padding:0 4px 4px;flex:1}
+.opt{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;width:100%;padding:6px 8px;border:0;border-radius:6px;background:none;color:inherit;text-align:left;cursor:pointer;font:inherit;font-size:.88rem}
+.opt:hover,.opt.act{background:var(--line-2)}
+.opt .mk{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);flex:none}
+.opt[aria-selected="true"]{font-weight:800}
+.opt[aria-selected="true"] .mk{border-color:var(--brand);background:radial-gradient(circle,var(--brand) 0 4px,transparent 5px)}
+.opt-g{padding:8px 8px 2px;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}
+.ms-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;border-top:1px solid var(--line-2);font-size:.8rem;color:var(--ink-3)}
 .field.active select,.field.active .cb input,.field.active input[type=date]{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand);font-weight:700}
 .field.wide{grid-column:span 2}
 .dates{display:flex;gap:6px}.dates input{flex:1;min-width:0}
@@ -151,6 +170,34 @@ button,input,select{font:inherit;color:inherit}
 .grid{display:grid;gap:16px;align-items:start}
 .g-2{grid-template-columns:repeat(2,minmax(0,1fr))}
 [role=tabpanel][hidden]{display:none!important}
+.panel-col{display:flex;flex-direction:column;gap:16px}
+/* Encabezado «Ficha territorial»: misma estructura en Nacional y Departamento */
+.fhead{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:var(--r);padding:12px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.fhead .eyebrow{color:var(--brand-ink)}
+.fhead h2{font-size:1.45rem;font-weight:800;line-height:1.15;letter-spacing:-.01em}
+.fhead .fmeta{display:flex;flex-wrap:wrap;gap:4px 22px;margin:2px 0 0;font-size:.9rem}
+.fhead .fmeta div{display:flex;gap:6px;align-items:baseline}
+.fhead .fmeta dt{color:var(--ink-3);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.fhead .fmeta dd{margin:0;font-weight:700}
+.fhead .note{margin:2px 0 0}
+/* Indicador con barra y selector cantidad / porcentaje */
+.kpi .k{align-items:center}
+.kpi .seg.xs button{min-height:26px;padding:2px 8px;font-size:.72rem;text-transform:none;letter-spacing:0}
+.kbar{height:10px;border-radius:5px;background:var(--line-2);overflow:hidden;margin:6px 0 4px}
+.kbar span{display:block;height:100%;background:var(--st-pres);border-radius:5px;min-width:0}
+.kbar{display:flex}
+.kbar span{border-radius:0}
+.kbar span:first-child{border-radius:5px 0 0 5px}.kbar span:last-child{border-radius:0 5px 5px 0}.kbar span:only-child{border-radius:5px}
+.klegend{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:.78rem;color:var(--ink-2)}
+.klegend span{display:inline-flex;align-items:center;gap:5px}
+.klegend b{color:var(--ink)}
+.klegend .sw{width:10px;height:10px}
+.prompt{display:flex;flex-direction:column;gap:4px;padding:14px;border:1px dashed var(--line);border-radius:8px;background:var(--surface-2);font-size:.9rem;color:var(--ink-2)}
+.prompt strong{color:var(--ink);font-size:1rem}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.field[hidden]{display:none!important}
+.cb input:disabled{background:var(--surface-2);color:var(--ink-3);cursor:not-allowed}
+.leaflet-container.dep-pick{cursor:pointer}
 
 /* ---------- Territorio ---------- */
 .terr{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px;align-items:start}
@@ -167,7 +214,7 @@ button,input,select{font:inherit;color:inherit}
 .maptitle{margin-left:auto;font-weight:800;font-size:.95rem;text-align:right}
 .maptitle small{display:block;font-weight:600;color:var(--ink-3);font-size:.78rem}
 .mapbox{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
-#map{height:min(72vh,760px);min-height:420px;background:#1f2a2e}
+#map,#mapDep{height:min(72vh,760px);min-height:420px;background:#1f2a2e}
 .maplegend{position:absolute;left:10px;bottom:30px;z-index:500;background:rgba(18,22,18,.82);color:#fff;border-radius:8px;padding:8px 10px;font-size:.78rem;max-width:min(330px,60%);display:flex;flex-direction:column;gap:3px}
 .maplegend h4{margin:0 0 2px;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:#dfe8d6}
 .maplegend .row{display:flex;justify-content:space-between;gap:10px;align-items:center}
@@ -267,7 +314,7 @@ a.src{display:inline-block;margin-top:4px;font-weight:800;color:#245a24}
 .foot p{max-width:120ch;margin:0}
 
 /* ---------- Responsivo ---------- */
-@media (max-width:1100px){.fb-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.terr{grid-template-columns:1fr}.side{position:static;max-height:none}.top-in{grid-template-columns:1fr}.cortes{max-width:none}}
+@media (max-width:1100px){.terr{grid-template-columns:1fr}.side{position:static;max-height:none}.top-in{grid-template-columns:1fr}.cortes{max-width:none}}
 @media (max-width:860px){
   .g-2{grid-template-columns:1fr}
   .fb-toggle{display:inline-flex}
@@ -282,7 +329,7 @@ a.src{display:inline-block;margin-top:4px;font-weight:800;color:#245a24}
   .cortes{display:none}
   .kpi .v{font-size:1.5rem}
   .bar{grid-template-columns:minmax(70px,38%) 1fr 64px;gap:6px}
-  #map{height:62vh;min-height:360px}
+  #map,#mapDep{height:62vh;min-height:360px}
   .maplegend{max-width:calc(100% - 20px)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -309,27 +356,29 @@ a.src{display:inline-block;margin-top:4px;font-weight:800;color:#245a24}
 <span class="brandbar" aria-hidden="true"></span>
 <nav class="tabs-wrap" aria-label="Módulos del tablero">
   <div class="tabs in gut" role="tablist" id="tabs">
-    <button role="tab" id="tab-territorio" aria-selected="true" aria-controls="p-territorio" data-tab="territorio">Territorio</button>
-    <button role="tab" id="tab-analisis" aria-selected="false" aria-controls="p-analisis" data-tab="analisis" tabindex="-1">Análisis y registros</button>
+    <button role="tab" id="tab-nacional" aria-selected="true" aria-controls="p-nacional" data-tab="nacional">Nacional</button>
+    <button role="tab" id="tab-departamento" aria-selected="false" aria-controls="p-departamento" data-tab="departamento" tabindex="-1">Departamento</button>
     <button role="tab" id="tab-metodo" aria-selected="false" aria-controls="p-metodo" data-tab="metodo" tabindex="-1">Fuentes y método</button>
   </div>
 </nav>
 
-<section class="filterbar in gut" aria-label="Filtros globales" id="filterbar" hidden>
+<section class="filterbar in gut" aria-label="Filtros del módulo" id="filterbar" hidden>
   <div class="fb-head">
-    <p class="universe"><b>Filtros</b></p>
+    <p class="universe"><b id="fbTitle">Filtros</b></p>
     <div class="fb-actions">
       <button class="btn ghost fb-toggle" type="button" id="btnFilters" aria-expanded="false" aria-controls="fbGrid">Filtros</button>
       <button class="btn ghost" type="button" id="btnReload" title="Volver a consultar el servicio geográfico">Actualizar datos</button>
-      <button class="btn ghost" type="button" id="btnReset">Restablecer todo</button>
+      <button class="btn ghost" type="button" id="btnReset">Restablecer filtros</button>
     </div>
   </div>
   <div class="fb-grid" id="fbGrid">
-    <div class="field" id="fl-dep"><label for="fDep">Departamento / Gerencia seccional</label><div id="cbDep" data-input-id="fDep"></div></div>
-    <div class="field" id="fl-mun"><label for="fMun">Municipio</label><div id="cbMun" data-input-id="fMun"></div></div>
-    <div class="field" id="fl-dis"><label for="fDis">Enfermedad</label><select id="fDis"></select></div>
-    <div class="field" id="fl-est"><label for="fEst">Estado sanitario</label><select id="fEst"></select></div>
-    <div class="field" id="fl-fue"><label for="fFue">Fuente</label><select id="fFue"></select></div>
+    <div class="fb-sep" data-mod="nacional">Nacional</div>
+    <div class="field" id="fl-dis" data-mod="nacional"><span>Enfermedad</span></div>
+    <div class="field" id="fl-est" data-mod="nacional"><span>Estado sanitario</span></div>
+    <div class="field" id="fl-fue" data-mod="nacional"><span>Fuente</span></div>
+    <div class="fb-sep" data-mod="departamento" hidden>Departamento</div>
+    <div class="field" id="fl-dep" data-mod="departamento" hidden><span>Departamento / Gerencia seccional</span></div>
+    <div class="field" id="fl-mun" data-mod="departamento" hidden><span>Municipio</span></div>
   </div>
   <div class="chipset" id="chips" aria-live="polite"></div>
 </section>
@@ -342,22 +391,23 @@ a.src{display:inline-block;margin-top:4px;font-weight:800;color:#245a24}
   </div>
 
   <div id="app" hidden style="display:flex;flex-direction:column;gap:16px">
-    <section class="kpis" id="kpis" aria-label="Indicadores"></section>
 
-    <section id="p-territorio" role="tabpanel" aria-labelledby="tab-territorio">
+    <!-- ================= Módulo Nacional ================= -->
+    <section id="p-nacional" role="tabpanel" aria-labelledby="tab-nacional" class="panel-col">
+      <section class="kpis" id="kpis" aria-label="Indicadores nacionales"></section>
       <div class="terr">
         <div class="mapcol">
-          <div class="maptools" role="toolbar" aria-label="Controles del mapa">
+          <header class="fhead" id="fheadNac" aria-live="polite"></header>
+          <div class="maptools" role="toolbar" aria-label="Controles del mapa nacional">
             <div class="seg" role="group" aria-label="Mapa base">
-              <button type="button" data-base="osm" aria-pressed="true">OpenStreetMap</button>
-              <button type="button" data-base="sat" aria-pressed="false">Satelital</button>
+              <button type="button" data-map="nac" data-base="osm" aria-pressed="true">OpenStreetMap</button>
+              <button type="button" data-map="nac" data-base="sat" aria-pressed="false">Satélite</button>
             </div>
-            <label class="check"><input type="checkbox" id="tLabels" disabled><span>Topónimos</span></label>
+            <label class="check"><input type="checkbox" id="tLabels" data-map="nac" disabled><span>Topónimos</span></label>
             <button class="btn ghost sm" id="btnFit" type="button">Ajustar vista</button>
-            <div class="maptitle" id="mapTitle">Mapa municipal<small id="mapSub"></small></div>
           </div>
           <div class="mapbox">
-            <div id="map" role="region" aria-label="Mapa de municipios"></div>
+            <div id="map" role="region" aria-label="Mapa nacional de municipios"></div>
             <div class="maplegend" id="mapLegend"></div>
             <div class="mapmsg" id="mapMsg" hidden></div>
           </div>
@@ -368,27 +418,44 @@ a.src{display:inline-block;margin-top:4px;font-weight:800;color:#245a24}
           </div>
         </div>
         <aside class="side" aria-label="Ficha territorial">
-          <section class="card"><header class="card-h"><h2 id="fichaH">Ficha territorial</h2><span class="unit" id="fichaU"></span></header><div class="ficha" id="ficha"></div></section>
-          <section class="card"><header class="card-h"><h2>Señales para revisión</h2><span class="unit">Información</span></header><div id="rev"></div></section>
+              <section class="card"><header class="card-h"><h2>Distribución territorial por enfermedad</h2><div class="seg sm" role="group" aria-label="Unidad del gráfico"><button type="button" data-g="g2" data-m="n" aria-pressed="false">Cantidad</button><button type="button" data-g="g2" data-m="pct" aria-pressed="true">%</button></div></header><p class="card-d" id="g2sub"></p><div class="lgd" id="g2l"></div><div id="g2"></div></section>
         </aside>
       </div>
+      <section class="card"><header class="card-h"><h2>Antigüedad de la información</h2><span class="unit">Registros</span></header><p class="card-d" id="g5sub"></p><div id="g5"></div></section>
+      <section class="card" id="tblNac"></section>
     </section>
 
-    <section id="p-analisis" role="tabpanel" aria-labelledby="tab-analisis" hidden>
-      <div class="grid g-2">
-        <section class="card"><header class="card-h"><h2>Distribución territorial por enfermedad</h2><div class="seg sm" role="group" aria-label="Unidad del gráfico"><button type="button" data-g="g2" data-m="pct" aria-pressed="true">Porcentaje</button><button type="button" data-g="g2" data-m="n" aria-pressed="false">Cantidad</button></div></header><p class="card-d" id="g2sub"></p><div class="lgd" id="g2l"></div><div id="g2"></div></section>
-        <section class="card"><header class="card-h"><h2>Estado sanitario por departamento</h2><div class="seg sm" role="group" aria-label="Unidad del gráfico"><button type="button" data-g="g3" data-m="pct" aria-pressed="true">Porcentaje</button><button type="button" data-g="g3" data-m="n" aria-pressed="false">Cantidad</button></div></header><p class="card-d" id="g3sub"></p><div class="lgd" id="g3l"></div><div class="scrollbars" id="g3"></div></section>
-        <section class="card" style="grid-column:1/-1"><header class="card-h"><h2>Antigüedad de la información</h2><span class="unit">Registros</span></header><p class="card-d">Registros por fecha de actualización (FEC_ACT). Es la fecha de actualización del estatus, no la de un evento sanitario.</p><div id="g5"></div></section>
-        <section class="card" style="grid-column:1/-1">
-          <header class="card-h"><h2>Registros de la selección</h2><span class="unit" id="tblU"></span></header>
-          <p class="card-d">Cada fila es un registro de la capa: un municipio y una enfermedad con su estado. La exportación incluye los filtros globales y la búsqueda.</p>
-          <div class="tbar">
-            <div class="field"><label for="tSearch">Buscar en la tabla</label><input type="search" id="tSearch" placeholder="Municipio, enfermedad, estado, soporte…"></div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="btnCsv" type="button">Exportar CSV</button><button class="btn ghost" id="btnCopy" type="button">Copiar CSV</button></div>
+    <!-- ================= Módulo Departamento / Gerencia seccional ================= -->
+    <section id="p-departamento" role="tabpanel" aria-labelledby="tab-departamento" class="panel-col" hidden>
+      <div class="terr">
+        <div class="mapcol">
+          <header class="fhead" id="fheadDep" aria-live="polite"></header>
+          <div class="maptools" role="toolbar" aria-label="Controles del mapa departamental">
+            <div class="seg" role="group" aria-label="Mapa base">
+              <button type="button" data-map="dep" data-base="osm" aria-pressed="true">OpenStreetMap</button>
+              <button type="button" data-map="dep" data-base="sat" aria-pressed="false">Satélite</button>
+            </div>
+            <label class="check"><input type="checkbox" id="tLabelsDep" data-map="dep" disabled><span>Topónimos</span></label>
+            <button class="btn ghost sm" id="btnFitDep" type="button">Ajustar vista</button>
           </div>
-          <div class="tscroll"><table class="data" id="tbl"><thead></thead><tbody></tbody></table></div>
-          <div class="pager" id="pager"></div>
-        </section>
+          <div class="mapbox">
+            <div id="mapDep" role="region" aria-label="Mapa de límites departamentales y municipales"></div>
+            <div class="maplegend" id="mapDepLegend"></div>
+            <div class="mapmsg" id="mapDepMsg" hidden></div>
+          </div>
+          <div class="svc" aria-live="polite">
+            <span class="status" id="stBaseDep" data-s="load"><i class="st-dot"></i><span>Mapa base</span></span>
+            <span class="status" id="stDane" data-s="load"><i class="st-dot"></i><span>Límites DANE</span></span>
+            <span class="muted">Clic en el mapa para seleccionar un departamento o un municipio.</span>
+          </div>
+        </div>
+        <aside class="side" aria-label="Ficha departamental">
+          <section class="card"><header class="card-h"><h2>Distribución territorial por enfermedad</h2><div class="seg sm" role="group" aria-label="Unidad del gráfico"><button type="button" data-g="g2d" data-m="n" aria-pressed="false">Cantidad</button><button type="button" data-g="g2d" data-m="pct" aria-pressed="true">%</button></div></header><p class="card-d" id="g2dsub"></p><div class="lgd" id="g2dl"></div><div id="g2d"></div></section>
+          <section class="card" id="munCard" hidden><header class="card-h"><h2>Municipio</h2><span class="unit">Estado por enfermedad</span></header><div class="ficha" id="munFicha"></div></section>
+        </aside>
+      </div>
+      <div class="grid g-2">
+        <section class="card" style="grid-column:1/-1" id="tblDep"></section>
       </div>
     </section>
 
@@ -414,8 +481,7 @@ const CFG = {
   required: ["COD_DEP","NOM_DEP","COD_MUN","NOM_MUN","TIP_PRE","NOM_PRE","ESTADO","FEC_ACT","FUENTE"],
   optional: ["NOM_REG","CAT_MUN","MUN_PDET","MUN_ZOMAC","FRE_ACT","DOC_SOP","URL"],
   staleYears: 5,
-  defaultDisease: "Fiebre Aftosa",               // vista inicial: una enfermedad, no la síntesis de todas
-  dane: { total: 1122, nota: "La referencia DANE usada en los censos normalizados del ICA tiene 1.122 municipios; en esta capa no aparece 94663 Mapiripana (Guainía)." }
+  dane: { total: 1122, nota: "Frente al MGN 2025 del DANE (1.122 municipios y áreas no municipalizadas), en la capa del ICA no aparece 27493 Nuevo Belén de Bajirá (Chocó), creado en 2025." }
 };
 
 /* Clasificación según Resolución ICA 00018426 de 2025 (mapeo manual, documentado). */
@@ -467,12 +533,13 @@ const clasOf = dis => (NORMA[fold(dis)]||{c:"sd"}).c;
 const cnt = (map,k,n=1) => map.set(k,(map.get(k)||0)+n);
 
 /* ================= Estado ================= */
-const defaults = () => ({dep:"", mun:"", dis:"", est:"", fue:"", d0:"", d1:""});
+// S.f: filtros del módulo Nacional · S.d: filtros del módulo Departamento / Gerencia seccional
+const defaults = () => ({dis:"", est:"", fue:""});
 const S = {
-  f:defaults(), firstLoad:true,
+  f:defaults(), d:{dep:"", mun:""}, tab:"nacional", depFitKey:null, firstLoad:true,
   meta:null, recs:[], MUN:new Map(), DEP:new Map(), Q:{}, counts:{}, loadedAt:null,
-  geo:null, layers:new Map(), lastFitKey:null,
-  t:{q:"", sort:"dep", dir:1, page:0, size:25}, mode:{g2:"pct", g3:"pct"}
+  geo:null, layers:new Map(),
+  mode:{g2:"pct", g2d:"pct", kMun:"n", kDep:"n"}
 };
 
 /* ================= Acceso al servicio ================= */
@@ -528,6 +595,7 @@ async function load(){
     build(raw, oid);
     S.loadedAt = new Date();
     $("#boot").hidden = true; $("#app").hidden = false; $("#filterbar").hidden = false;
+    if(initUI.done) layoutFilters();
     initUI();
     render();
     $("#subtitle").textContent = "Enfermedades, infecciones e infestaciones que están bajo control oficial, de declaración obligatoria y bajo vigilancia especial al " + S.loadedAt.toLocaleDateString("es-CO",{day:"numeric",month:"long",year:"numeric",timeZone:"America/Bogota"});
@@ -587,22 +655,24 @@ function build(raw, oidF){
   S.dates = {min: dates.length ? isoD(Math.min(...dates)) : "", max: dates.length ? isoD(Math.max(...dates)) : ""};
   S.diseases = [...new Set(recs.map(r=>r.dis))].sort((a,b)=>a.localeCompare(b,"es"));
   // Validación de filtros vigentes tras recarga
-  if(S.f.dep && !DEP.has(S.f.dep)) S.f.dep = "";
-  if(S.f.mun && !MUN.has(S.f.mun)) S.f.mun = "";
+  if(S.d.dep && !DEP.has(S.d.dep)) S.d = initialDep();
+  if(S.d.mun && !MUN.has(S.d.mun)) S.d.mun = "";
   if(S.f.dis && !S.diseases.includes(S.f.dis)) S.f.dis = "";
-  if(S.firstLoad){ S.firstLoad = false; S.f = initialFilters(); }
+  if(S.firstLoad){ S.firstLoad = false; S.f = initialNac(); S.d = initialDep(); }
+  if(!S.f.dis) S.f.dis = diseaseOrder()[0] || "";
 }
-function initialFilters(){ const f = defaults(); const d = S.diseases.find(x=>fold(x)===fold(CFG.defaultDisease)); f.dis = d || S.diseases[0] || ""; return f; }
+// Orden del filtro de enfermedad: control oficial, vigilancia especial, no listadas; alfabético dentro de cada grupo
+function diseaseOrder(){ const o = ["co","ve","nl","sd"]; return S.diseases.slice().sort((a,b)=>o.indexOf(clasOf(a))-o.indexOf(clasOf(b)) || a.localeCompare(b,"es")); }
+const DEP_DEFAULT = "05";   // Antioquia
+function initialNac(){ return {dis:diseaseOrder()[0] || "", est:"", fue:""}; }
+function initialDep(){ return {dep:S.DEP.has(DEP_DEFAULT) ? DEP_DEFAULT : ([...S.DEP.keys()].sort()[0] || ""), mun:""}; }
 
 /* ================= Filtrado y agregación (única fuente de verdad) ================= */
 function match(r, skip){
   const f = S.f;
-  if(skip!=="dep" && skip!=="ter" && f.dep && r.codDep!==f.dep) return false;
-  if(skip!=="mun" && skip!=="ter" && f.mun && r.codMun!==f.mun) return false;
   if(skip!=="dis" && f.dis && r.dis!==f.dis) return false;
   if(skip!=="est" && f.est && r.est!==f.est) return false;
   if(skip!=="fue" && f.fue && r.fue!==f.fue) return false;
-  if(skip!=="fec" && (f.d0||f.d1)){ if(!r.iso) return false; if(f.d0 && r.iso < f.d0) return false; if(f.d1 && r.iso > f.d1) return false; }
   return true;
 }
 function aggregate(R){
@@ -620,7 +690,7 @@ function aggregate(R){
     let m = A.byMun.get(r.codMun); if(!m){ m = []; A.byMun.set(r.codMun, m); } m.push(r);
     let t = A.byDate.get(r.iso); if(!t){ t = {n:0, dis:new Set(), fec:r.fec}; A.byDate.set(r.iso, t); } t.n++; t.dis.add(r.dis);
   }
-  A.single = S.f.dis || (A.dis.size===1 ? [...A.dis][0] : "");
+  A.single = S.f.dis;
   // Para una sola enfermedad: estado del municipio (si hubiera más de un registro, prevalece «Con presencia»)
   A.munCat = new Map();
   if(A.single){
@@ -632,231 +702,266 @@ function aggregate(R){
   }
   return A;
 }
-function universe(){ if(S.f.mun) return 1; if(S.f.dep) return (S.DEP.get(S.f.dep)||{muns:new Set()}).muns.size; return S.MUN.size; }
 
-/* ================= Interfaz: filtros ================= */
-let cbDep, cbMun;
-function Combo(root, {placeholder, onPick}){
-  root.innerHTML = '<div class="cb"><input type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" autocomplete="off" spellcheck="false"><button class="cb-clear" type="button" aria-label="Quitar selección" hidden>×</button><ul role="listbox" hidden></ul></div>';
-  const input = root.querySelector("input"), list = root.querySelector("ul"), clr = root.querySelector(".cb-clear");
-  input.id = root.dataset.inputId; list.id = input.id + "-list"; input.setAttribute("aria-controls", list.id); input.placeholder = placeholder;
-  let opts = [], value = "", active = -1;
-  const labelOf = v => (opts.find(o=>o.value===v)||{}).label || "";
-  function draw(q){
-    const nq = fold(q);
-    const shown = opts.filter(o=>!nq || fold(o.label + " " + (o.sub||"") + " " + o.value).includes(nq)).slice(0, 400);
-    list.innerHTML = shown.length ? shown.map((o,i)=>`<li role="option" id="${list.id}-${i}" data-v="${esc(o.value)}" aria-selected="${o.value===value}" class="${o.count===0?"zero":""}"><span>${esc(o.label)}${o.sub?`<small>${esc(o.sub)}</small>`:""}</span><b>${o.count==null?"":fmtN(o.count)}</b></li>`).join("") : '<li class="empty">Sin coincidencias</li>';
-    active = -1; input.removeAttribute("aria-activedescendant");
+/* ================= Interfaz: filtros por módulo ================= */
+// Nacional: enfermedad, estado sanitario y fuente (S.f). Departamento / Gerencia seccional: departamento y municipio (S.d).
+let pkDis, pkEst, pkFue, pkDep, pkMun;
+// Selector con la misma propuesta visual del tablero de laboratorios (botón + panel con búsqueda).
+// Selección única: la enfermedad y el departamento son obligatorios; estado, fuente y municipio admiten «Todos».
+const PICKS = [];
+function Pick(host, {title, allLabel=null, onPick, foot}){
+  const btn = document.createElement("button"); btn.type = "button"; btn.className = "ms-btn";
+  btn.setAttribute("aria-haspopup","listbox"); btn.setAttribute("aria-expanded","false"); btn.setAttribute("aria-label", title);
+  host.appendChild(btn);
+  const pop = document.createElement("div"); pop.className = "ms-pop"; pop.hidden = true;
+  pop.innerHTML = `<input type="search" class="ms-q" placeholder="Buscar" aria-label="Buscar en ${esc(title)}"><div class="ms-list" role="listbox"></div><div class="ms-foot">${allLabel!=null ? '<button type="button" class="btn-link ms-clear">Limpiar selección</button>' : "<span></span>"}<span>${esc(foot || (allLabel!=null ? "Selección única" : "Selección obligatoria"))}</span></div>`;
+  document.body.appendChild(pop);
+  const list = pop.querySelector(".ms-list"), input = pop.querySelector(".ms-q");
+  let opts = [], value = "", q = "", ph = allLabel || "";
+  const labelOf = v => (opts.find(o=>o.v===v)||{}).label || "";
+  function draw(){
+    const t = fold(q); let g = null, out = [];
+    if(allLabel!=null && !t) out.push(`<button type="button" class="opt" role="option" data-v="" aria-selected="${!value}"><span class="mk"></span><span>${esc(allLabel)}</span></button>`);
+    for(const o of opts){
+      if(t && !fold(o.label + " " + o.v).includes(t)) continue;
+      if(o.group && o.group!==g){ g = o.group; out.push(`<div class="opt-g">${esc(g)}</div>`); }
+      out.push(`<button type="button" class="opt" role="option" data-v="${esc(o.v)}" aria-selected="${o.v===value}"><span class="mk"></span><span>${esc(o.label)}</span></button>`);
+    }
+    list.innerHTML = out.join("") || '<p class="empty" style="padding:8px">Sin coincidencias.</p>';
   }
-  function open(){ draw(""); list.hidden = false; input.setAttribute("aria-expanded","true"); }
-  function close(){ list.hidden = true; input.setAttribute("aria-expanded","false"); input.value = labelOf(value); }
-  function pick(v){ value = v; close(); onPick(v); }
-  input.addEventListener("focus", ()=>{ input.select(); open(); });
-  input.addEventListener("input", ()=>{ draw(input.value); list.hidden = false; input.setAttribute("aria-expanded","true"); });
-  input.addEventListener("keydown", e=>{
-    const items = [...list.querySelectorAll("li[data-v]")];
-    if(e.key==="ArrowDown"){ e.preventDefault(); if(list.hidden) open(); active = Math.min(items.length-1, active+1); }
-    else if(e.key==="ArrowUp"){ e.preventDefault(); active = Math.max(0, active-1); }
-    else if(e.key==="Enter"){ e.preventDefault(); const it = items[active>=0?active:0]; if(it) pick(it.dataset.v); return; }
-    else if(e.key==="Escape"){ close(); return; }
-    else return;
-    items.forEach((it,i)=>it.classList.toggle("act", i===active));
-    if(items[active]){ items[active].scrollIntoView({block:"nearest"}); input.setAttribute("aria-activedescendant", items[active].id); }
-  });
-  list.addEventListener("mousedown", e=>{ const li = e.target.closest("li[data-v]"); if(li){ e.preventDefault(); pick(li.dataset.v); input.blur(); } });
-  input.addEventListener("blur", ()=>setTimeout(()=>{ if(document.activeElement!==input) close(); }, 150));
-  clr.addEventListener("click", ()=>pick(""));
-  return { set(o, v){ opts = o; value = v; clr.hidden = !v; if(document.activeElement!==input) input.value = labelOf(v); else if(!list.hidden) draw(input.value); } };
+  function place(){
+    const r = btn.getBoundingClientRect(), w = Math.min(Math.max(300, r.width), window.innerWidth-24);
+    const left = Math.min(Math.max(12, r.left), window.innerWidth-w-12), top = r.bottom+4;
+    pop.style.width = w+"px"; pop.style.left = left+"px"; pop.style.top = top+"px";
+    pop.style.maxHeight = Math.max(200, Math.min(420, window.innerHeight-top-12))+"px";
+  }
+  const api = {
+    show(){ PICKS.forEach(p=>p.hide()); q = ""; input.value = ""; draw(); pop.hidden = false; btn.setAttribute("aria-expanded","true"); place(); input.focus({preventScroll:true}); },
+    hide(){ pop.hidden = true; btn.setAttribute("aria-expanded","false"); },
+    place, isOpen:()=>!pop.hidden, btn, pop,
+    set(o, v){ opts = o; value = v; host.classList.toggle("active", !!v); btn.textContent = v ? (labelOf(v) || v) : ph; if(!pop.hidden) draw(); },
+    disable(on, placeholder){ btn.disabled = on; if(placeholder) ph = placeholder; if(on) api.hide(); }
+  };
+  btn.addEventListener("click", ()=> pop.hidden ? api.show() : api.hide());
+  input.addEventListener("input", ()=>{ q = input.value; draw(); });
+  input.addEventListener("keydown", e=>{ if(e.key==="Enter"){ const b = list.querySelector(".opt"); if(b){ e.preventDefault(); b.click(); } } });
+  list.addEventListener("click", e=>{ const b = e.target.closest(".opt"); if(!b) return; api.hide(); onPick(b.dataset.v); btn.focus({preventScroll:true}); });
+  const clr = pop.querySelector(".ms-clear"); if(clr) clr.addEventListener("click", ()=>{ api.hide(); onPick(""); });
+  PICKS.push(api);
+  return api;
 }
+document.addEventListener("click", e=>{ if(e.target.closest && (e.target.closest(".ms-btn") || e.target.closest(".ms-pop"))) return; PICKS.forEach(p=>p.hide()); });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") PICKS.forEach(p=>p.hide()); });
+window.addEventListener("resize", ()=>PICKS.forEach(p=>{ if(p.isOpen()) p.place(); }));
+window.addEventListener("scroll", ()=>PICKS.forEach(p=>{ if(p.isOpen()) p.place(); }), true);
 
-function setF(k, v){
-  S.f[k] = v;
-  if(k==="mun" && v){ const m = S.MUN.get(v); if(m) S.f.dep = m.codDep; }
-  if(k==="dep" && S.f.mun){ const m = S.MUN.get(S.f.mun); if(!m || m.codDep!==v) S.f.mun = ""; }
-  S.t.page = 0;
+function setF(k, v){ if(k==="dis" && !v) return; S.f[k] = v; if(TABLES.nac) TABLES.nac.reset(); render(); }
+function setD(k, v){
+  if(k==="dep"){ if(!v) return; S.d.dep = v; const m = S.MUN.get(S.d.mun); if(!m || m.codDep!==v) S.d.mun = ""; }  // municipio incompatible: se restablece
+  if(k==="mun"){ S.d.mun = v; const m = S.MUN.get(v); if(m) S.d.dep = m.codDep; }
+  if(TABLES.dep) TABLES.dep.reset();
   render();
+}
+function selectTab(name){
+  const t = document.querySelector(`#tabs [data-tab="${name}"]`); if(t) t.click();
 }
 function initUI(){
   if(initUI.done){ return; } initUI.done = true;
-  cbDep = Combo($("#cbDep"), {placeholder:"Todo el país", onPick:v=>setF("dep", v)});
-  cbMun = Combo($("#cbMun"), {placeholder:"Todos los municipios", onPick:v=>setF("mun", v)});
-  for(const [id,k] of [["#fDis","dis"],["#fEst","est"],["#fFue","fue"]]) $(id).addEventListener("change", e=>setF(k, e.target.value));
-  $("#tSearch").addEventListener("input", e=>{ S.t.q = e.target.value; S.t.page = 0; renderTable(); });
-  $("#btnCsv").addEventListener("click", exportCSV);
-  $("#btnCopy").addEventListener("click", copyCSV);
-  document.querySelectorAll("[data-g][data-m]").forEach(b=>b.addEventListener("click", ()=>{ S.mode[b.dataset.g] = b.dataset.m; document.querySelectorAll(`[data-g="${b.dataset.g}"]`).forEach(x=>x.setAttribute("aria-pressed", x.dataset.m===b.dataset.m)); renderCharts(S.A); }));
-  $("#btnFit").addEventListener("click", ()=>{ S.lastFitKey = null; fitMap(true); });
-  $("#btnReset").addEventListener("click", ()=>{ S.f = initialFilters(); S.t.page = 0; S.lastFitKey = null; if(map) map.closePopup(); render(); });
+  pkDis = Pick($("#fl-dis"), {title:"Enfermedad", onPick:v=>setF("dis", v)});
+  pkEst = Pick($("#fl-est"), {title:"Estado sanitario", allLabel:"Todos", onPick:v=>setF("est", v)});
+  pkFue = Pick($("#fl-fue"), {title:"Fuente", allLabel:"Todas", onPick:v=>setF("fue", v)});
+  pkDep = Pick($("#fl-dep"), {title:"Departamento / Gerencia seccional", onPick:v=>setD("dep", v), foot:"Ordenado por código DANE"});
+  pkMun = Pick($("#fl-mun"), {title:"Municipio", allLabel:"Todos", onPick:v=>setD("mun", v), foot:"Municipios del departamento"});
+  initTables();
+  // Selectores cantidad / porcentaje (gráficos e indicadores); delegado porque los indicadores se redibujan
+  document.addEventListener("click", e=>{ const b = e.target.closest && e.target.closest("[data-g][data-m]"); if(!b) return; S.mode[b.dataset.g] = b.dataset.m; document.querySelectorAll(`[data-g="${b.dataset.g}"]`).forEach(x=>x.setAttribute("aria-pressed", x.dataset.m===b.dataset.m)); render(); });
+  $("#btnFit").addEventListener("click", ()=>fitNac());
+  $("#btnFitDep").addEventListener("click", ()=>{ S.depFitKey = null; fitDep(); });
+  $("#btnReset").addEventListener("click", ()=>{
+    if(S.tab==="departamento"){ S.d = initialDep(); TABLES.dep.reset(); } else { S.f = initialNac(); TABLES.nac.reset(); if(MAPS.nac.map) MAPS.nac.map.closePopup(); }
+    render();
+  });
   $("#btnFilters").addEventListener("click", e=>{ const g = $("#fbGrid"), o = !g.classList.contains("open"); g.classList.toggle("open", o); e.currentTarget.setAttribute("aria-expanded", o); });
-  document.querySelectorAll("[data-base]").forEach(b=>b.addEventListener("click", ()=>setBase(b.dataset.base)));
-  $("#tLabels").addEventListener("change", ()=>setBase(S.base));
+  document.querySelectorAll("[data-base]").forEach(b=>b.addEventListener("click", ()=>setBase(b.dataset.map, b.dataset.base)));
+  $("#tLabels").addEventListener("change", ()=>setBase("nac", MAPS.nac.base));
+  $("#tLabelsDep").addEventListener("change", ()=>setBase("dep", MAPS.dep.base));
   const tabs = [...document.querySelectorAll("#tabs [role=tab]")];
-  const go = t => { tabs.forEach(b=>{ const on = b===t; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; $("#p-"+b.dataset.tab).hidden = !on; }); if(t.dataset.tab==="territorio" && map) setTimeout(()=>{ map.invalidateSize(); }, 0); };
-  tabs.forEach((b,i)=>{ b.addEventListener("click", ()=>go(b)); b.addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const n = tabs[(i + (e.key==="ArrowRight"?1:tabs.length-1)) % tabs.length]; go(n); n.focus(); }); });
-  initMap();
+  const go = t => {
+    tabs.forEach(b=>{ const on = b===t; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; $("#p-"+b.dataset.tab).hidden = !on; });
+    S.tab = t.dataset.tab;
+    layoutFilters();
+    if(S.tab==="nacional" && MAPS.nac.map) setTimeout(()=>MAPS.nac.map.invalidateSize(), 0);
+    if(S.tab==="departamento"){ if(!MAPS.dep.map) initDepMap(); else setTimeout(()=>{ MAPS.dep.map.invalidateSize(); daneRefresh(); }, 0); }
+    render();
+  };
+  tabs.forEach((b,i)=>{ b.addEventListener("click", ()=>go(b)); b.addEventListener("keydown", e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; const n = tabs[(i + (e.key==="ArrowRight"?1:tabs.length-1)) % tabs.length]; n.click(); n.focus(); }); });
+  S.tab = "nacional"; layoutFilters();
+  initNacMap();
   initTips();
+}
+// Muestra solo los filtros del módulo activo y los reparte en columnas iguales
+function layoutFilters(){
+  const fb = $("#filterbar");
+  if(S.tab==="metodo"){ fb.hidden = true; return; }
+  fb.hidden = false;
+  const fields = [...document.querySelectorAll("#fbGrid [data-mod]")];
+  let n = 0; fields.forEach(f=>{ const on = f.dataset.mod===S.tab; f.hidden = !on; if(on && f.classList.contains("field")) n++; });
+  PICKS.forEach(p=>p.hide());
+  $("#fbGrid").style.setProperty("--cols", n);
+  $("#fbTitle").textContent = S.tab==="departamento" ? "Filtros · Departamento" : "Filtros · Nacional";
 }
 function optList(sel, opts, value, allLabel){
   const groups = new Map();
   for(const o of opts){ const g = o.group||""; if(!groups.has(g)) groups.set(g, []); groups.get(g).push(o); }
-  let h = `<option value="">${esc(allLabel)}</option>`;
-  if(value && !opts.some(o=>o.value===value)) h += `<option value="${esc(value)}">${esc(value)} (0)</option>`;
+  let h = allLabel==null ? "" : `<option value="">${esc(allLabel)}</option>`;
+  if(value && !opts.some(o=>o.value===value)) h += `<option value="${esc(value)}">${esc(value)}</option>`;
   for(const [g, os] of groups){
-    const inner = os.map(o=>`<option value="${esc(o.value)}"${o.count===0?' class="zero"':""}>${esc(o.label)} (${fmtN(o.count)})</option>`).join("");
+    const inner = os.map(o=>`<option value="${esc(o.value)}">${esc(o.label)}</option>`).join("");
     h += g ? `<optgroup label="${esc(g)}">${inner}</optgroup>` : inner;
   }
   sel.innerHTML = h; sel.value = value;
 }
 function renderFilters(){
-  const f = S.f;
-  // Departamento: municipios distintos con registros según los demás filtros
-  const dm = new Map(); for(const r of S.recs) if(match(r,"ter")){ if(!dm.has(r.codDep)) dm.set(r.codDep, new Set()); dm.get(r.codDep).add(r.codMun); }
-  cbDep.set([...S.DEP.values()].sort((a,b)=>a.name.localeCompare(b.name,"es")).map(d=>({value:d.cod, label:d.name, sub:seccional(d.cod,d.name)+" · "+d.cod, count:(dm.get(d.cod)||new Set()).size})), f.dep);
-  // Municipio: dependiente del departamento
-  const mm = new Map(); for(const r of S.recs) if(match(r,"mun")) cnt(mm, r.codMun);
-  const muns = [...S.MUN.values()].filter(m=>!f.dep || m.codDep===f.dep).sort((a,b)=>a.name.localeCompare(b.name,"es"));
-  cbMun.set(muns.map(m=>({value:m.cod, label:m.name, sub:(f.dep?"":m.dep+" · ")+m.cod, count:mm.get(m.cod)||0})), f.mun);
-  // Enfermedad, agrupada por clasificación normativa (conteo = registros)
-  const dc = new Map(); for(const r of S.recs) if(match(r,"dis")) cnt(dc, r.dis);
-  const order = ["co","ve","nl","sd"];
-  optList($("#fDis"), S.diseases.map(d=>({value:d, label:d, count:dc.get(d)||0, group:CLAS[clasOf(d)], o:order.indexOf(clasOf(d))})).sort((a,b)=>a.o-b.o||a.label.localeCompare(b.label,"es")), f.dis, "Todas las enfermedades (síntesis)");
-  // Estado: valores reales del campo, agrupados por categoría
-  const ec = new Map(); for(const r of S.recs) if(match(r,"est")) cnt(ec, r.est);
-  const ests = [...new Set(S.recs.map(r=>r.est))];
-  optList($("#fEst"), ests.map(e=>({value:e, label:e, count:ec.get(e)||0, group:CATS.find(c=>c.k===estCat(e)).label, o:CAT_ORDER[estCat(e)]})).sort((a,b)=>a.o-b.o||a.label.localeCompare(b.label,"es")), f.est, "Todos los estados");
-  // Fuente
-  const fc = new Map(); for(const r of S.recs) if(match(r,"fue")) cnt(fc, r.fue);
-  optList($("#fFue"), [...new Set(S.recs.map(r=>r.fue))].sort().map(v=>({value:v, label:v, count:fc.get(v)||0})), f.fue, "Todas las fuentes");
-  // Fechas
+  const f = S.f, d = S.d;
+  // Nacional · Enfermedad: todas, agrupadas por clasificación normativa (sin conteos)
+  pkDis.set(diseaseOrder().map(x=>({v:x, label:x, group:CLAS[clasOf(x)]})), f.dis);
+  // Estado y fuente: valores reales presentes con los demás filtros (interdependientes)
+  const ests = [...new Set(S.recs.filter(r=>match(r,"est")).map(r=>r.est))];
+  // Se agrupa por categoría solo cuando la categoría tiene varios valores (p. ej. zonas libres de fiebre aftosa)
+  const nCat = new Map(); ests.forEach(e=>cnt(nCat, estCat(e)));
+  pkEst.set(ests.map(e=>({v:e, label:e, group:nCat.get(estCat(e))>1 ? CATS.find(c=>c.k===estCat(e)).label : "", o:CAT_ORDER[estCat(e)]})).sort((a,b)=>a.o-b.o||a.label.localeCompare(b.label,"es")), f.est);
+  pkFue.set([...new Set(S.recs.filter(r=>match(r,"fue")).map(r=>r.fue))].sort().map(v=>({v, label:v})), f.fue);
+  // Departamento y municipio: «código DANE – nombre», ordenados por código
+  pkDep.set([...S.DEP.values()].sort((a,b)=>a.cod.localeCompare(b.cod)).map(x=>({v:x.cod, label:`${x.cod} – ${x.name}`})), d.dep);
+  const muns = d.dep ? [...S.MUN.values()].filter(m=>m.codDep===d.dep).sort((a,b)=>a.cod.localeCompare(b.cod)) : [];
+  pkMun.disable(!d.dep, d.dep ? "Todos" : "Seleccione primero un departamento");
+  pkMun.set(muns.map(m=>({v:m.cod, label:`${m.cod} – ${m.name}`})), d.mun);
 }
-function renderContext(A){
-  const f = S.f, chips = [];
-  const add = (k, label) => chips.push(`<span class="chip sel">${esc(label)}<button type="button" aria-label="Quitar filtro ${esc(label)}" data-k="${k}">×</button></span>`);
-  if(f.dep){ const d = S.DEP.get(f.dep); add("dep", d ? d.name : f.dep); }
-  if(f.mun){ const m = S.MUN.get(f.mun); add("mun", m ? m.name : f.mun); }
-  if(f.dis) add("dis", f.dis);
-  if(f.est) add("est", f.est);
-  if(f.d0 || f.d1) add("fec", `Actualización ${f.d0||"…"} a ${f.d1||"…"}`);
-  if(f.fue) add("fue", f.fue);
-  const scope = f.mun ? "Municipal" : f.dep ? "Departamental / seccional" : "Nacional";
-  const isDefault = JSON.stringify(f) === JSON.stringify(initialFilters());
-  $("#chips").innerHTML = (chips.length ? chips.join("") : "") + (f.dis ? "" : '<span class="chip static">Todas las enfermedades: síntesis de presencia</span>');
-  $("#chips").querySelectorAll("button[data-k]").forEach(b=>b.addEventListener("click", ()=>{ const k = b.dataset.k; if(k==="fec"){ S.f.d0 = ""; S.f.d1 = ""; render(); } else setF(k, ""); }));
+function renderContext(){
+  const chips = [];
+  const add = (k, label, mod, fixed) => chips.push(fixed ? `<span class="chip sel" style="padding-right:12px">${esc(label)}</span>` : `<span class="chip sel">${esc(label)}<button type="button" aria-label="Quitar filtro ${esc(label)}" data-k="${k}" data-mod="${mod}">×</button></span>`);
+  let isDefault;
+  if(S.tab==="departamento"){
+    if(S.d.dep){ const x = S.DEP.get(S.d.dep); add("dep", x ? `${x.cod} – ${x.name}` : S.d.dep, "dep", true); }
+    if(S.d.mun){ const m = S.MUN.get(S.d.mun); add("mun", m ? `${m.cod} – ${m.name}` : S.d.mun, "dep"); }
+    isDefault = JSON.stringify(S.d) === JSON.stringify(initialDep());
+  } else {
+    if(S.f.dis) add("dis", S.f.dis, "nac", true);
+    if(S.f.est) add("est", S.f.est, "nac");
+    if(S.f.fue) add("fue", S.f.fue, "nac");
+    isDefault = JSON.stringify(S.f) === JSON.stringify(initialNac());
+  }
+  $("#chips").innerHTML = chips.join("");
+  $("#chips").querySelectorAll("button[data-k]").forEach(b=>b.addEventListener("click", ()=> b.dataset.mod==="dep" ? setD(b.dataset.k, "") : setF(b.dataset.k, "")));
   $("#btnReset").disabled = isDefault;
-  const n = chips.length; $("#btnFilters").textContent = n ? `Filtros (${n})` : "Filtros";
-  for(const [id, on] of [["#fl-dep",f.dep],["#fl-mun",f.mun],["#fl-dis",f.dis],["#fl-est",f.est],["#fl-fue",f.fue]]) $(id).classList.toggle("active", !!on);
+  $("#btnFilters").textContent = chips.length ? `Filtros (${chips.length})` : "Filtros";
+  for(const [id, on] of [["#fl-dis",S.f.dis],["#fl-est",S.f.est],["#fl-fue",S.f.fue],["#fl-dep",S.d.dep],["#fl-mun",S.d.mun]]) $(id).classList.toggle("active", !!on);
 }
 
-/* ================= KPI ================= */
+/* ================= KPI (Nacional) ================= */
+// Municipios y departamentos con presencia: barra segmentada por estado sanitario sobre el universo territorial
+// y selector Cantidad / %. Solo se dibujan las categorías respaldadas por registros de la selección; el resto de la
+// barra (gris claro) son unidades sin registro en la selección, que no se interpretan como «Libre».
+function kpiBar(key, label, parts, U, unit, tip){
+  const pct = S.mode[key]==="pct", pres = (parts.find(p=>p.k==="pres")||{n:0}).n;
+  const fmt = n => pct ? fmtP(n,U) : fmtN(n);
+  const sin = U - parts.reduce((a,p)=>a+p.n, 0);
+  const seg = `<div class="seg xs" role="group" aria-label="Unidad de ${esc(label)}"><button type="button" data-g="${key}" data-m="n" aria-pressed="${!pct}">Cantidad</button><button type="button" data-g="${key}" data-m="pct" aria-pressed="${pct}">%</button></div>`;
+  const shown = parts.filter(p=>p.n>0);
+  return `<div class="kpi${pres>0?" hl":""}"><div class="k"><span>${label} <button class="info" type="button" data-tip="${esc(tip)}" aria-label="Definición: ${esc(tip)}">i</button></span>${seg}</div>
+    <div class="v">${fmt(pres)}</div>
+    <div class="kbar" role="img" aria-label="${shown.map(p=>`${p.label} ${fmtN(p.n)}`).join(", ")} de ${fmtN(U)} ${unit}">${shown.map(p=>`<span style="width:${U ? p.n/U*100 : 0}%;background:var(${p.v})" data-tip="${esc(p.label)}: ${fmtN(p.n)} ${p.n===1 ? unit.replace(/s$/,"") : unit} (${fmtP(p.n,U)})"></span>`).join("")}</div>
+    <div class="klegend">${shown.map(p=>`<span><i class="sw" style="background:var(${p.v})"></i>${p.label} <b>${fmt(p.n)}</b></span>`).join("")}${sin>0 ? `<span><i class="sw" style="background:var(--line-2);border:1px solid var(--line)"></i>Sin registro en la selección <b>${fmt(sin)}</b></span>` : ""}</div>
+    <div class="s">Universo: ${fmtN(U)} ${unit}</div></div>`;
+}
+const CAT_LABEL = {pres:"Con presencia", libre:"Libre", otro:"Otro estado"};
+// Estado de cada unidad para la enfermedad seleccionada (municipio: su registro; departamento: con presencia si algún
+// municipio la tiene, libre si todos sus municipios con registro son libres, otro estado en los demás casos)
+function kpiParts(A){
+  const mun = new Map(); for(const c of A.munCat.values()) cnt(mun, c);
+  const depSt = new Map();
+  for(const [cod, c] of A.munCat){ const d = cod.slice(0,2), prev = depSt.get(d); if(!prev || CAT_ORDER[c] < CAT_ORDER[prev]) depSt.set(d, c); }
+  // un departamento con municipios «Libre» y «Otro estado» se clasifica como «Otro estado»
+  for(const [d, c] of depSt) if(c==="libre"){ for(const [cod, mc] of A.munCat) if(cod.slice(0,2)===d && mc==="otro"){ depSt.set(d, "otro"); break; } }
+  const dep = new Map(); for(const c of depSt.values()) cnt(dep, c);
+  const toParts = m => CATS.map(c=>({k:c.k, v:c.v, label:CAT_LABEL[c.k], n:m.get(c.k)||0}));
+  return {mun:toParts(mun), dep:toParts(dep)};
+}
 function renderKPIs(A){
-  const U = universe();
-  const tile = (k, v, s, tip, hl) => `<div class="kpi${hl?" hl":""}"><div class="k"><span>${k}</span><button class="info" type="button" data-tip="${esc(tip)}" aria-label="Definición: ${esc(tip)}">i</button></div><div class="v">${v}</div><div class="s">${s}</div></div>`;
-  const stale = A.minFec!=null ? `Más antigua: ${fmtD(A.minFec)}` : "Sin fechas válidas";
+  const P = kpiParts(A);
+  const tile = (k, v, s, tip) => `<div class="kpi"><div class="k"><span>${k} <button class="info" type="button" data-tip="${esc(tip)}" aria-label="Definición: ${esc(tip)}">i</button></span></div><div class="v">${v}</div><div class="s">${s}</div></div>`;
   $("#kpis").innerHTML = !A.R.length ?
-    `<div class="card empty" style="grid-column:1/-1"><strong>No hay registros para esta combinación de filtros.</strong><br>Cambie o quite algún filtro. La ausencia de registros no equivale a ausencia de la enfermedad.</div>` :
+    `<div class="card empty" style="grid-column:1/-1"><strong>No hay registros para esta combinación de filtros.</strong><br>Cambie el estado sanitario o la fuente. La ausencia de registros no equivale a ausencia de la enfermedad.</div>` :
     [
-      tile("Municipios con presencia", fmtN(A.munPres.size), `${fmtP(A.munPres.size, U)} de ${fmtN(U)} municipios del universo`, "Municipios distintos (COD_MUN) con al menos un registro de estado «Con presencia» en la selección. Denominador: municipios de la capa en el ámbito territorial seleccionado.", A.munPres.size>0),
-      tile("Departamentos con presencia", fmtN(A.depPres.size), `${fmtP(A.depPres.size, S.f.dep?1:S.DEP.size)} de ${fmtN(S.f.dep?1:S.DEP.size)} departamentos o seccionales`, "Departamentos distintos (COD_DEP) con al menos un municipio de estado «Con presencia» en la selección. Cada departamento corresponde a una gerencia seccional del ICA.", A.depPres.size>0),
-      tile("Enfermedades con presencia", fmtN(A.disPres.size), `de ${fmtN(A.dis.size)} enfermedades en la selección`, "Enfermedades distintas (NOM_PRE) con estado «Con presencia» en al menos un municipio de la selección."),
-      tile("Última actualización", A.maxFec!=null ? fmtD(A.maxFec) : "—", stale, "Fecha más reciente del campo FEC_ACT entre los registros filtrados. Es la fecha de actualización del estatus, no la fecha de un evento sanitario.")
+      kpiBar("kMun", "Municipios con presencia", P.mun, S.MUN.size, "municipios", "Municipios distintos (COD_MUN) con estado «Con presencia» para la enfermedad seleccionada, según los filtros de estado y fuente. Los segmentos muestran los estados reportados (rojo con presencia, verde libre); el gris son municipios sin registro en la selección. Denominador: municipios de la capa."),
+      kpiBar("kDep", "Departamentos con presencia", P.dep, S.DEP.size, "departamentos", "Departamentos distintos (COD_DEP) con al menos un municipio con estado «Con presencia» para la enfermedad seleccionada. Un departamento es «Libre» solo si todos sus municipios con registro son libres. Denominador: departamentos de la capa; cada uno corresponde a una gerencia seccional."),
+      tile("Última actualización", A.maxFec!=null ? fmtD(A.maxFec) : "—", A.minFec!=null ? `Más antigua: ${fmtD(A.minFec)}` : "Sin fechas válidas", "Fecha más reciente del campo FEC_ACT entre los registros filtrados. Es la fecha de actualización del estatus, no la fecha de un evento sanitario.")
     ].join("");
 }
 
-/* ================= Ficha territorial ================= */
+/* ================= Ficha territorial (Nacional) ================= */
+// Solo con una enfermedad seleccionada: nombre, especie y municipios por estado reportado (valores reales de ESTADO).
+// Encabezado «Ficha territorial» compartido por ambos módulos
+function fichaHead(id, title, meta, note){
+  $(id).innerHTML = `<span class="eyebrow">Ficha territorial</span><h2>${esc(title)}</h2>
+    <dl class="fmeta">${meta.map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>${note ? `<p class="note">${note}</p>` : ""}`;
+}
 function renderFicha(A){
-  const f = S.f, el = $("#ficha");
-  $("#fichaU").textContent = f.mun ? "Municipio" : f.dep ? "Departamento" : "Nacional";
-  const U = universe();
-  const catRows = (map, total, unit) => {
-    const rows = CATS.filter(c=>map.get(c.k));
-    if(!rows.length) return "";
-    return `<div><div class="stack" role="img" aria-label="Distribución por estado">${rows.map(c=>`<span style="width:${map.get(c.k)/total*100}%;background:var(${c.v})" data-tip="${esc(c.label)}: ${fmtN(map.get(c.k))} ${unit}"></span>`).join("")}</div>
-      <div class="klist" style="margin-top:6px">${rows.map(c=>`<div><span><i class="dot" style="background:var(${c.v})"></i>${c.label}</span><b class="num">${fmtN(map.get(c.k))}</b></div>`).join("")}</div></div>`;
-  };
-  if(f.mun){
-    const m = S.MUN.get(f.mun), rs = (A.byMun.get(f.mun)||[]).slice().sort((a,b)=>CAT_ORDER[a.cat2]-CAT_ORDER[b.cat2]||a.dis.localeCompare(b.dis,"es"));
-    el.innerHTML = `<div><div class="title">${esc(m.name)}</div><div class="sub">${esc(m.dep)} · <span class="mono">${m.cod}</span> · ${esc(seccional(m.codDep, m.dep))}</div>
-      <div class="sub">${esc(m.cat)}${m.pdet?" · PDET":""}${m.zomac?" · ZOMAC":""}${m.reg && fold(m.reg)!=="no aplica" ? " · Subregión "+esc(m.reg) : ""}</div></div>
-      <dl class="facts"><dt>Registros en la selección</dt><dd>${fmtN(rs.length)}</dd><dt>Enfermedades con presencia</dt><dd>${fmtN(new Set(rs.filter(r=>r.cat2==="pres").map(r=>r.dis)).size)}</dd><dt>Última actualización</dt><dd>${(()=>{ const fs = rs.map(r=>r.fec).filter(x=>x!=null); return fs.length ? fmtD(Math.max(...fs)) : "—"; })()}</dd></dl>
-      <div><div class="lbl" style="margin-bottom:4px">Estado por enfermedad</div><div class="mlist">${rs.length ? rs.map(r=>`<div class="r"><span>${esc(r.dis)}<span class="tag ${r.clas}">${CLAS_TAG[r.clas]}</span><br><small class="muted">${fmtD(r.fec)} · ${esc(r.fue)}</small></span><span class="st"><i class="dot" style="background:var(${CATS.find(c=>c.k===r.cat2).v})"></i>${esc(r.est)}</span></div>`).join("") : '<div class="empty">Sin registros para los filtros activos.</div>'}</div></div>
-      <button class="btn ghost" type="button" id="fichaBack">Volver a ${esc(m.dep)}</button>`;
-    $("#fichaBack").addEventListener("click", ()=>setF("mun",""));
-    return;
-  }
-  const d = f.dep ? S.DEP.get(f.dep) : null;
-  const title = d ? d.name : "Colombia";
-  const sub = d ? `${seccional(d.cod, d.name)} · código DANE <span class="mono">${d.cod}</span>` : `${fmtN(S.DEP.size)} departamentos · ${fmtN(S.MUN.size)} municipios en la capa`;
-  let body = `<dl class="facts">
-      <dt>Municipios del universo de referencia</dt><dd>${fmtN(U)}</dd>
-      <dt>Municipios con registros</dt><dd>${fmtN(A.mun.size)} <span class="muted">(${fmtP(A.mun.size,U)})</span></dd>
-      <dt>Municipios con presencia</dt><dd>${fmtN(A.munPres.size)} <span class="muted">(${fmtP(A.munPres.size,U)})</span></dd>
-      <dt>Última actualización</dt><dd>${A.maxFec!=null?fmtD(A.maxFec):"—"}</dd></dl>`;
-  if(A.single){
-    const has = A.R.some(r=>r.dis===A.single);
-    const pres = [...A.munCat.values()].filter(c=>c==="pres").length;
-    const mc = new Map(); for(const c of A.munCat.values()) cnt(mc, c);
-    const n = NORMA[fold(A.single)];
-    body = `<div><div class="lbl">Enfermedad</div><div style="font-weight:700">${esc(A.single)} <span class="tag ${clasOf(A.single)}">${CLAS[clasOf(A.single)]}</span></div>
-      ${n&&n.esp?`<div class="sub">Especie según la Resolución 00018426: ${esc(n.esp)}</div>`:""}</div>
-      <dl class="facts"><dt>¿Hay registros en este ámbito?</dt><dd>${has?'<span class="no">Sí</span>':'<span class="no">No</span>'}</dd>
-      <dt>¿Municipios con estatus «Con presencia»?</dt><dd>${pres?`<span class="yes">Sí, ${fmtN(pres)}</span>`:'<span class="no">No</span>'}</dd>
-      <dt>Municipios con registros / universo</dt><dd>${fmtN(A.munCat.size)} / ${fmtN(U)}</dd>
-      <dt>Porcentaje con presencia</dt><dd>${fmtP(pres,U)}</dd>
-      <dt>Última actualización</dt><dd>${A.maxFec!=null?fmtD(A.maxFec):"—"}</dd></dl>
-      <div><div class="lbl" style="margin-bottom:4px">Municipios según estado reportado</div>${catRows(mc, A.munCat.size, "municipios") || '<div class="note">Sin registros.</div>'}</div>`;
-  } else if(A.R.length){
-    const cats = new Map(); for(const r of A.R) cnt(cats, r.cat2);
-    body += `<div><div class="lbl" style="margin-bottom:4px">Registros (municipio–enfermedad) por estado</div>${catRows(cats, A.R.length, "registros")}</div>
-      <p class="note" style="margin:0">Seleccione una enfermedad para ver la distribución de municipios por estado; con varias enfermedades, la unidad es el par municipio–enfermedad.</p>`;
-  }
-  if(d && A.munPres.size){
-    const top = [...A.munPres].map(c=>({c, n:new Set((A.byMun.get(c)||[]).filter(r=>r.cat2==="pres").map(r=>r.dis)).size})).sort((a,b)=>b.n-a.n||S.MUN.get(a.c).name.localeCompare(S.MUN.get(b.c).name,"es")).slice(0,8);
-    body += `<div><div class="lbl" style="margin-bottom:4px">Municipios con más enfermedades con presencia</div><div class="mlist">${top.map(t=>`<div class="r"><button class="btn-link" type="button" data-mun="${t.c}">${esc(S.MUN.get(t.c).name)}</button><b class="num">${t.n}</b></div>`).join("")}</div></div>`;
-  }
-  el.innerHTML = `<div><div class="title">${esc(title)}</div><div class="sub">${sub}</div></div>` + body +
-    `<p class="note" style="margin:0">Un municipio sin estatus «Con presencia» no se clasifica aquí como libre de enfermedad: se muestra el estado que reporta la capa.</p>`;
-  el.querySelectorAll("[data-mun]").forEach(b=>b.addEventListener("click", ()=>setF("mun", b.dataset.mun)));
+  const dis = S.f.dis, n = NORMA[fold(dis)] || {c:"sd"};
+  fichaHead("#fheadNac", dis || "Sin enfermedad", [["Condición", `<span class="tag ${n.c}" style="margin-left:0">${CLAS[n.c]}</span>`], ["Especie", esc(n.esp || "No indicada en la resolución")]]);
+
 }
 
-/* ================= Mapa ================= */
-let map, geoLayer, tiles = {}, baseLayer = null, labelLayer = null;
-// OpenStreetMap: con el tablero servido por http(s) se usa tile.openstreetmap.org con política de referencia;
-// abierto como archivo local (sin Referer, que exige la política de uso de OSM) se usa el servidor de OpenStreetMap France.
+/* ================= Mapas ================= */
+// Dos mapas independientes: Nacional (polígonos del servicio ICA) y Departamental (límites DANE MGN 2025).
 const BASES = {
+  // tile.openstreetmap.org exige página de origen (Referer); abierto como archivo local se usa OpenStreetMap France.
   osm: () => /^https?:$/.test(location.protocol)
     ? {url:"https://tile.openstreetmap.org/{z}/{x}/{y}.png", max:19, attr:'&copy; colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}
     : {url:"https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", max:20, attr:'&copy; colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · teselas &copy; <a href="https://www.openstreetmap.fr/" target="_blank" rel="noopener">OpenStreetMap France</a>'},
   sat: () => ({url:"https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", max:18, attr:"Imágenes: Esri, Maxar, Earthstar Geographics y comunidad de usuarios SIG"})
 };
 const LABELS_URL = "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}";
+const MAPS = {
+  nac:{map:null, base:"osm", baseLayer:null, labelLayer:null, st:"#stBase", lab:"#tLabels"},
+  dep:{map:null, base:"osm", baseLayer:null, labelLayer:null, st:"#stBaseDep", lab:"#tLabelsDep", ov:null, tok:0}
+};
+let geoLayer;
 function dotStatus(id, s, txt){ const el = $(id); el.dataset.s = s; el.querySelector("span").textContent = txt; }
-function setBase(k){
-  S.base = k;
-  document.querySelectorAll("[data-base]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.base===k));
-  const cfg = BASES[k](), name = k==="sat" ? "satelital" : "OpenStreetMap";
-  if(baseLayer) map.removeLayer(baseLayer);
+function setBase(which, k){
+  const M = MAPS[which]; if(!M.map) { M.base = k; return; }
+  M.base = k;
+  document.querySelectorAll(`[data-map="${which}"][data-base]`).forEach(b=>b.setAttribute("aria-pressed", b.dataset.base===k));
+  const cfg = BASES[k](), name = k==="sat" ? "satélite" : "OpenStreetMap";
+  if(M.baseLayer) M.map.removeLayer(M.baseLayer);
   let ok = 0, err = 0;
-  dotStatus("#stBase", "load", `Mapa base ${name}: cargando`);
-  baseLayer = L.tileLayer(cfg.url, {maxZoom:cfg.max, subdomains:"abc", attribution:cfg.attr, referrerPolicy:"strict-origin-when-cross-origin"})
-    .on("tileload", ()=>{ if(!ok++) dotStatus("#stBase", "ok", `Mapa base ${name}`); })
-    .on("tileerror", ()=>{ if(++err >= 4 && !ok) dotStatus("#stBase", "err", `Mapa base ${name}: sin respuesta del servidor de teselas`); })
-    .addTo(map);
-  baseLayer.bringToBack();
-  const lab = $("#tLabels"); lab.disabled = k!=="sat";
-  if(labelLayer){ map.removeLayer(labelLayer); labelLayer = null; }
-  if(k==="sat" && lab.checked) labelLayer = L.tileLayer(LABELS_URL, {pane:"labels", maxZoom:18}).addTo(map);
+  dotStatus(M.st, "load", `Mapa base ${name}: cargando`);
+  M.baseLayer = L.tileLayer(cfg.url, {maxZoom:cfg.max, subdomains:"abc", attribution:cfg.attr, referrerPolicy:"strict-origin-when-cross-origin"})
+    .on("tileload", ()=>{ if(!ok++) dotStatus(M.st, "ok", `Mapa base ${name}`); })
+    .on("tileerror", ()=>{ if(++err >= 4 && !ok) dotStatus(M.st, "err", `Mapa base ${name}: sin respuesta del servidor de teselas`); })
+    .addTo(M.map);
+  M.baseLayer.bringToBack();
+  const lab = $(M.lab); lab.disabled = k!=="sat";
+  if(M.labelLayer){ M.map.removeLayer(M.labelLayer); M.labelLayer = null; }
+  if(k==="sat" && lab.checked) M.labelLayer = L.tileLayer(LABELS_URL, {pane:"labels", maxZoom:18}).addTo(M.map);
+  if(which==="dep") daneRefresh();   // la simbología de límites se adapta al fondo; selección y extensión no cambian
 }
-function initMap(){
-  map = L.map("map", {preferCanvas:true, zoomControl:false, zoomSnap:0.25, zoomDelta:0.5, minZoom:4, maxZoom:18}).setView([4.4,-73.5], 5.25);
-  map.attributionControl.setPrefix(false);
-  L.control.zoom({position:"topright", zoomInTitle:"Acercar", zoomOutTitle:"Alejar"}).addTo(map);
-  L.control.scale({imperial:false, position:"bottomright"}).addTo(map);
-  map.createPane("labels"); map.getPane("labels").style.zIndex = 450; map.getPane("labels").style.pointerEvents = "none";
-  setBase("osm");
+function newMap(id){
+  const m = L.map(id, {preferCanvas:true, zoomControl:false, zoomSnap:0.25, zoomDelta:0.5, minZoom:4, maxZoom:18}).setView([4.4,-73.5], 5.25);
+  m.attributionControl.setPrefix(false);
+  L.control.zoom({position:"topright", zoomInTitle:"Acercar", zoomOutTitle:"Alejar"}).addTo(m);
+  L.control.scale({imperial:false, position:"bottomright"}).addTo(m);
+  m.createPane("labels"); m.getPane("labels").style.zIndex = 450; m.getPane("labels").style.pointerEvents = "none";
+  return m;
+}
+function initNacMap(){
+  MAPS.nac.map = newMap("map");
+  setBase("nac", MAPS.nac.base);
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>render());
 }
-function mapMsg(t, html){ const m = $("#mapMsg"); if(!t){ m.hidden = true; return; } m.hidden = false; m.innerHTML = `<div>${html?t:esc(t)}</div>`; }
+function mapMsg(t, html, id="#mapMsg"){ const m = $(id); if(!t){ m.hidden = true; return; } m.hidden = false; m.innerHTML = `<div>${html?t:esc(t)}</div>`; }
 async function loadGeometry(){
+  const map = MAPS.nac.map;
   mapMsg('<strong>Cargando límites municipales…</strong><br><span class="muted">Primera carga: unos segundos.</span>', true);
   dotStatus("#stGeo", "load", "Límites municipales: cargando");
   try{
@@ -878,14 +983,14 @@ async function loadGeometry(){
       onEachFeature: (feat, layer)=>{
         const cod = norm(feat.properties.COD_MUN); S.layers.set(cod, layer);
         layer.bindPopup(()=>popupHTML(cod), {maxWidth:420, minWidth:300, autoPanPadding:[24,24], className:"ica-pop"});
-        layer.on("mouseover", ()=>{ const m = S.MUN.get(cod); const rs = (S.A&&S.A.byMun.get(cod))||[]; layer.bindTooltip(`<strong>${esc(m?m.name:cod)}</strong> · ${esc(m?m.dep:"")}<br>${rs.length?`${rs.filter(r=>r.cat2==="pres").length} con presencia de ${rs.length} registros`:"Sin registros en la selección"}`, {sticky:true, direction:"top", opacity:1}).openTooltip(); });
+        layer.on("mouseover", ()=>{ const m = S.MUN.get(cod); const rs = (S.A&&S.A.byMun.get(cod))||[]; const r = S.f.dis && rs.find(x=>x.dis===S.f.dis);
+          layer.bindTooltip(`<strong>${esc(m?m.name:cod)}</strong> · ${esc(m?m.dep:"")}<br>${r ? esc(r.est) : S.f.dis ? "Sin registro en la selección" : "Seleccione una enfermedad"}`, {sticky:true, direction:"top", opacity:1}).openTooltip(); });
         layer.on("mouseout", ()=>layer.closeTooltip());
       }
     }).addTo(map);
     mapMsg(null);
     dotStatus("#stGeo", "ok", `Límites municipales: ${fmtN(S.layers.size)} polígonos (servicio ICA)`);
-    S.lastFitKey = null;
-    styleMap(); fitMap();
+    styleMap(); fitNac();
   }catch(e){
     console.error(e);
     dotStatus("#stGeo", "err", "Límites municipales: sin respuesta");
@@ -894,51 +999,31 @@ async function loadGeometry(){
 }
 function styleMap(){
   if(!geoLayer || !S.A) return;
-  const A = S.A, none = css("--st-none"), line = css("--map-line"), sel = css("--map-sel");
+  const A = S.A, none = css("--st-none"), line = css("--map-line");
   const catCol = Object.fromEntries(CATS.map(c=>[c.k, css(c.v)]));
-  const seq = [0,1,2,3,4,5,6].map(i=>css("--seq"+i));
-  let maxN = 0; const nPres = new Map();
-  if(!A.single){ for(const [cod, rs] of A.byMun){ const n = new Set(rs.filter(r=>r.cat2==="pres").map(r=>r.dis)).size; nPres.set(cod, n); if(n>maxN) maxN = n; } }
   for(const [cod, layer] of S.layers){
-    const has = A.byMun.has(cod), isSel = S.f.mun===cod, inDep = !S.f.dep || cod.slice(0,2)===S.f.dep;
-    let fill = none, op = .18;
-    if(has){
-      if(A.single){ fill = catCol[A.munCat.get(cod)] || none; op = .78; }
-      else { const n = nPres.get(cod)||0; fill = seq[Math.min(6, n)]; op = .8; }
-    } else if(!inDep){ op = .06; }
-    layer.setStyle({fillColor:fill, fillOpacity:op, color:isSel?sel:line, weight:isSel?3:(inDep?.5:.25), opacity:inDep?1:.4});
-    if(isSel) layer.bringToFront();
+    const c = S.f.dis ? A.munCat.get(cod) : null;
+    layer.setStyle({fillColor:c ? catCol[c] : none, fillOpacity:c ? .78 : .2, color:line, weight:.5, opacity:1});
   }
-  // Leyenda dinámica
   let h;
-  if(A.single){
-    // Valores reales de ESTADO (p. ej. zonas de fiebre aftosa), con el color de su categoría; conteo de municipios
-    const ev = new Map(); for(const [cod, rs] of A.byMun){ const r = rs.filter(x=>x.dis===A.single).sort((a,b)=>CAT_ORDER[a.cat2]-CAT_ORDER[b.cat2])[0]; if(r) cnt(ev, r.est); }
+  if(S.f.dis){
+    const ev = new Map(); for(const [cod, rs] of A.byMun){ const r = rs.filter(x=>x.dis===S.f.dis).sort((a,b)=>CAT_ORDER[a.cat2]-CAT_ORDER[b.cat2])[0]; if(r) cnt(ev, r.est); }
     const evs = [...ev.entries()].sort((a,b)=>CAT_ORDER[estCat(a[0])]-CAT_ORDER[estCat(b[0])]||b[1]-a[1]);
-    h = `<h4>${esc(A.single)}</h4>` + evs.map(([e,n])=>`<div class="row"><span><i class="sw" style="background:${catCol[estCat(e)]}"></i>${esc(e)}</span><b class="num">${fmtN(n)}</b></div>`).join("");
+    h = `<h4>${esc(S.f.dis)}</h4>` + evs.map(([e,n])=>`<div class="row"><span><i class="sw" style="background:${catCol[estCat(e)]}"></i>${esc(e)}</span><b class="num">${fmtN(n)}</b></div>`).join("")
+      + `<div class="row"><span><i class="sw" style="background:${none}"></i>Sin registro en la selección</span></div><small>Rojo: con presencia. Verde: cualquier estado libre. Gris: sin registro, que no equivale a libre. Conteos en municipios.</small>`;
   } else {
-    const dist = new Map(); for(const n of nPres.values()) cnt(dist, Math.min(6,n));
-    h = `<h4>Todas las enfermedades · número con presencia</h4>` + Array.from({length:Math.min(6,maxN)+1},(_,i)=>i).map(i=>`<div class="row"><span><i class="sw" style="background:${seq[i]}"></i>${i===0?"Ninguna con presencia":i===6?"6 o más":i}</span><b class="num">${fmtN(dist.get(i)||0)}</b></div>`).join("");
+    h = `<h4>Seleccione una enfermedad</h4><small>El mapa muestra el estado de una enfermedad por municipio: rojo con presencia, verde libre.</small>`;
   }
-  h += `<div class="row"><span><i class="sw" style="background:${none}"></i>Sin registros en la selección</span></div><small>Rojo: con presencia. Verde: cualquier estado libre (incluye con y sin vacunación). Gris: sin registro, que no equivale a libre. Conteos en municipios.</small>`;
   $("#mapLegend").innerHTML = h;
-  const place = S.f.mun ? S.MUN.get(S.f.mun).name : S.f.dep ? S.DEP.get(S.f.dep).name : "Colombia";
-  $("#mapTitle").innerHTML = `${esc(A.single || "Todas las enfermedades")} · ${esc(place)}<small id="mapSub">${A.single ? "Estado reportado por municipio" : "Número de enfermedades con presencia por municipio"}</small>`;
 }
-function fitMap(force){
+function fitNac(){
   if(!geoLayer) return;
-  const key = S.f.mun || S.f.dep || "all";
-  if(!force && key===S.lastFitKey) return;
-  S.lastFitKey = key;
-  let b;
-  if(S.f.mun && S.layers.get(S.f.mun)) b = S.layers.get(S.f.mun).getBounds();
-  else if(S.f.dep){ b = L.latLngBounds([]); for(const [c,l] of S.layers) if(c.slice(0,2)===S.f.dep) b.extend(l.getBounds()); }
-  else { b = L.latLngBounds([]); for(const [c,l] of S.layers) if(c.slice(0,2)!=="88") b.extend(l.getBounds()); } // San Andrés queda fuera de la vista nacional para no reducir la escala
-  if(b && b.isValid()) map.fitBounds(b, {padding:[16,16], maxZoom:S.f.mun?11:9});
+  const b = L.latLngBounds([]); for(const [c,l] of S.layers) if(c.slice(0,2)!=="88") b.extend(l.getBounds()); // San Andrés fuera de la vista nacional para no reducir la escala
+  if(b.isValid()) MAPS.nac.map.fitBounds(b, {padding:[16,16]});
 }
 function popupHTML(cod){
   const m = S.MUN.get(cod); if(!m) return "Municipio sin datos";
-  const rs = S.recs.filter(r=>r.codMun===cod && match(r,"ter")).sort((a,b)=>CAT_ORDER[a.cat2]-CAT_ORDER[b.cat2]||a.dis.localeCompare(b.dis,"es"));
+  const rs = S.recs.filter(r=>r.codMun===cod && match(r)).sort((a,b)=>CAT_ORDER[a.cat2]-CAT_ORDER[b.cat2]||a.dis.localeCompare(b.dis,"es"));
   const total = S.recs.filter(r=>r.codMun===cod).length;
   const col = r => `var(${CATS.find(c=>c.k===r.cat2).v})`;
   const link = r => r.url ? `<a class="src" href="${esc(r.url)}" target="_blank" rel="noopener">Ir a la fuente${r.doc?": "+esc(r.doc):""} ↗</a>` : '<span class="muted">Sin enlace a la fuente</span>';
@@ -960,81 +1045,213 @@ function popupHTML(cod){
       <div class="scroll">${rs.map(r=>`<div class="pcard" style="border-left-color:${col(r)}"><div class="pdis">${esc(r.dis)} <span class="tag ${r.clas}">${CLAS_TAG[r.clas]}</span></div>
       <div class="pest" style="color:${col(r)}">${esc(r.est)}</div><div class="meta">${fmtD(r.fec)} · ${esc(/\(([^)]+)\)\s*$/.test(r.fue) ? r.fue.match(/\(([^)]+)\)\s*$/)[1] : r.fue)}</div>${link(r)}</div>`).join("")}</div>`;
   }
-  const btn = S.f.mun===cod ? `<button class="btn" type="button" data-popmun="">Quitar filtro de municipio</button>` : `<button class="btn" type="button" data-popmun="${cod}">Filtrar el tablero por ${esc(m.name)}</button>`;
-  return `<div class="pop">${head}${body}<div class="pact">${btn}</div></div>`;
+  return `<div class="pop">${head}${body}<div class="pact"><button class="btn" type="button" data-popmun="${cod}">Ver en Departamento / Gerencia seccional</button></div></div>`;
 }
-document.addEventListener("click", e=>{ const b = e.target.closest && e.target.closest("[data-popmun]"); if(!b) return; map.closePopup(); setF("mun", b.dataset.popmun); });
+document.addEventListener("click", e=>{
+  const b = e.target.closest && e.target.closest("[data-popmun]"); if(!b) return;
+  MAPS.nac.map.closePopup(); const m = S.MUN.get(b.dataset.popmun); if(!m) return;
+  S.d = {dep:m.codDep, mun:m.cod}; selectTab("departamento");
+});
+
+/* ================= Mapa departamental (DANE MGN 2025) ================= */
+// El servicio del DANE no entrega geometrías en las consultas; por eso los límites se dibujan con su operación
+// «export» (imagen) y simbología propia (dynamicLayers). Extensiones y selección por clic usan consultas sin geometría
+// por JSONP, porque el servidor no habilita CORS para otros orígenes.
+const DANE = {base:"https://geoportal.dane.gov.co/mparcgis/rest/services/MGN2025/Serv_CapasMGN_2025/MapServer", dep:319, mun:317, timeoutMs:25000};
+let jsonpN = 0;
+function jsonp(path, params){
+  return new Promise((resolve, reject)=>{
+    const cb = "__dane" + (++jsonpN), s = document.createElement("script");
+    const done = ()=>{ clearTimeout(t); try{ delete window[cb]; }catch(e){ window[cb] = undefined; } s.remove(); };
+    const t = setTimeout(()=>{ done(); reject(new Error("El servicio del DANE no respondió a tiempo.")); }, DANE.timeoutMs);
+    window[cb] = j => { done(); (j && j.error) ? reject(new Error("El servicio del DANE devolvió un error: " + (j.error.message||j.error.code))) : resolve(j); };
+    s.onerror = ()=>{ done(); reject(new Error("No hubo respuesta del servicio del DANE.")); };
+    s.src = DANE.base + path + "?" + new URLSearchParams({f:"json", ...params, callback:cb});
+    document.head.appendChild(s);
+  });
+}
+const qs = v => String(v).replace(/[^0-9]/g, "");   // los códigos DANE son numéricos: se sanean antes de ir a la consulta
+function daneSymbols(){
+  const sat = MAPS.dep.base==="sat";
+  return {
+    mun:   {line: sat ? [255,255,255,220] : [70,74,70,255], w: sat ? 0.9 : 0.8},
+    dep:   {line: sat ? [222,205,50,255] : [49,115,48,255], w: 2.8},
+    other: {line: sat ? [255,255,255,150] : [140,146,138,220], w: 0.8},
+    sel:   {fill: sat ? [255,255,255,70] : [49,115,48,80], line: sat ? [255,255,255,255] : [20,24,26,255], w: 2.6}
+  };
+}
+function daneLayers(){
+  const sym = (fill, line, w) => ({type:"simple", symbol:{type:"esriSFS", style:fill ? "esriSFSSolid" : "esriSFSNull", color:fill||[0,0,0,0], outline:{type:"esriSLS", style:"esriSLSSolid", color:line, width:w}}});
+  const lay = (id, src, where, r) => ({id, source:{type:"mapLayer", mapLayerId:src}, definitionExpression:where, drawingInfo:{renderer:r}, minScale:0, maxScale:0});
+  const Y = daneSymbols(), dep = qs(S.d.dep), mun = qs(S.d.mun);
+  // En dynamicLayers el primer elemento se dibuja encima
+  if(!dep) return [lay(904, DANE.dep, "DPTO_CCDGO > '00'", sym(null, Y.dep.line, 1.4))];
+  const out = [];
+  if(mun) out.push(lay(901, DANE.mun, `MPIO_CDPMP = '${mun}'`, sym(Y.sel.fill, Y.sel.line, Y.sel.w)));
+  out.push(lay(902, DANE.dep, `DPTO_CCDGO = '${dep}'`, sym(null, Y.dep.line, Y.dep.w)));
+  out.push(lay(903, DANE.mun, `DPTO_CCDGO = '${dep}'`, sym(null, Y.mun.line, Y.mun.w)));
+  out.push(lay(905, DANE.dep, `DPTO_CCDGO <> '${dep}'`, sym(null, Y.other.line, Y.other.w)));
+  return out;
+}
+let daneTimer = 0;
+function daneRefresh(){ clearTimeout(daneTimer); daneTimer = setTimeout(daneDraw, 120); }
+function daneDraw(){
+  const M = MAPS.dep, m = M.map; if(!m || $("#p-departamento").hidden) return;
+  const b = m.getBounds(), sz = m.getSize(); if(!sz.x || !sz.y) return;
+  const dpr = Math.min(2, window.devicePixelRatio||1);
+  const p1 = L.CRS.EPSG3857.project(b.getSouthWest()), p2 = L.CRS.EPSG3857.project(b.getNorthEast());
+  const url = DANE.base + "/export?" + new URLSearchParams({f:"image", format:"png32", transparent:"true",
+    bbox:[p1.x,p1.y,p2.x,p2.y].map(v=>v.toFixed(1)).join(","), bboxSR:3857, imageSR:3857,
+    size:`${Math.round(sz.x*dpr)},${Math.round(sz.y*dpr)}`, dpi:Math.round(96*dpr), dynamicLayers:JSON.stringify(daneLayers())});
+  const tok = ++M.tok, img = new Image();
+  dotStatus("#stDane", "load", "Límites DANE: dibujando");
+  img.onload = ()=>{ if(tok!==M.tok) return; const ov = L.imageOverlay(url, b, {pane:"dane", interactive:false}).addTo(m); if(M.ov) m.removeLayer(M.ov); M.ov = ov; dotStatus("#stDane", "ok", "Límites DANE · MGN 2025"); };
+  img.onerror = ()=>{ if(tok!==M.tok) return; dotStatus("#stDane", "err", "Límites DANE: sin respuesta del servicio"); };
+  img.src = url;
+}
+function initDepMap(){
+  const m = MAPS.dep.map = newMap("mapDep");
+  m.createPane("dane"); m.getPane("dane").style.zIndex = 420; m.getPane("dane").style.pointerEvents = "none";
+  setBase("dep", MAPS.dep.base);
+  m.on("moveend resize", daneRefresh);
+  m.on("click", e=>pickDane(e.latlng));
+  setTimeout(()=>{ m.invalidateSize(); S.depFitKey = null; fitDep(); daneRefresh(); }, 0);
+}
+// Clic: sin departamento identifica el departamento; con departamento identifica el municipio (y cambia de departamento si aplica)
+async function pickDane(ll){
+  const lyr = S.d.dep ? DANE.mun : DANE.dep;
+  try{
+    const j = await jsonp(`/${lyr}/query`, {geometry:`${ll.lng.toFixed(6)},${ll.lat.toFixed(6)}`, geometryType:"esriGeometryPoint", inSR:4326, spatialRel:"esriSpatialRelIntersects", outFields: lyr===DANE.mun ? "MPIO_CDPMP,DPTO_CCDGO" : "DPTO_CCDGO", returnGeometry:false});
+    const a = j.features && j.features[0] && j.features[0].attributes; if(!a) return;
+    if(lyr===DANE.dep){ if(S.DEP.has(a.DPTO_CCDGO)) setD("dep", a.DPTO_CCDGO); else mapMsg("Ese departamento no tiene registros en la capa del ICA.", false, "#mapDepMsg"); }
+    else if(S.MUN.has(a.MPIO_CDPMP)) setD("mun", S.d.mun===a.MPIO_CDPMP ? "" : a.MPIO_CDPMP);
+    else if(a.MPIO_CDPMP){ mapMsg(`El municipio ${a.MPIO_CDPMP} del DANE no tiene registros en la capa del ICA.`, false, "#mapDepMsg"); setTimeout(()=>mapMsg(null,false,"#mapDepMsg"), 3500); }
+  }catch(e){ dotStatus("#stDane", "err", e.message); }
+}
+async function fitDep(){
+  const m = MAPS.dep.map; if(!m) return;
+  const key = S.d.mun || S.d.dep || "all";
+  if(key===S.depFitKey) return; S.depFitKey = key;
+  if(key==="all"){ m.fitBounds([[-4.3,-79.1],[12.6,-66.8]], {padding:[10,10]}); return; }
+  const where = S.d.mun ? `MPIO_CDPMP = '${qs(S.d.mun)}'` : `DPTO_CCDGO = '${qs(S.d.dep)}'`;
+  try{
+    const j = await jsonp(`/${DANE.mun}/query`, {where, returnExtentOnly:true, outSR:4326});
+    if(key!==S.depFitKey) return;              // otra selección llegó mientras tanto
+    const e = j.extent; if(!e || !isFinite(e.xmin)) throw new Error("El DANE no devolvió la extensión.");
+    m.fitBounds([[e.ymin,e.xmin],[e.ymax,e.xmax]], {padding:[24,24], maxZoom:S.d.mun ? 12 : 10});
+  }catch(err){
+    // Respaldo: extensión desde los polígonos del servicio ICA ya cargados en el mapa nacional
+    const b = L.latLngBounds([]); for(const [c,l] of S.layers) if(S.d.mun ? c===S.d.mun : c.slice(0,2)===S.d.dep) b.extend(l.getBounds());
+    if(b.isValid()) m.fitBounds(b, {padding:[24,24]});
+    dotStatus("#stDane", "err", "Límites DANE: " + err.message);
+  }
+}
+// Municipios oficiales del DANE por departamento, para verificar la correspondencia de códigos con la capa del ICA
+async function daneMunicipios(dep){
+  S.daneMun = S.daneMun || {};
+  if(S.daneMun[dep]) return S.daneMun[dep];
+  const j = await jsonp(`/${DANE.mun}/query`, {where:`DPTO_CCDGO = '${qs(dep)}'`, outFields:"MPIO_CDPMP,MPIO_CNMBRE", returnGeometry:false, orderByFields:"MPIO_CDPMP"});
+  return (S.daneMun[dep] = (j.features||[]).map(f=>f.attributes));
+}
+function renderDepLegend(){
+  const Y = daneSymbols(), rgb = a => `rgba(${a[0]},${a[1]},${a[2]},${(a[3]??255)/255})`;
+  const lineSw = (a, w) => `<i class="sw" style="background:transparent;border:${Math.max(1,Math.round(w))}px solid ${rgb(a)}"></i>`;
+  $("#mapDepLegend").innerHTML = !S.d.dep
+    ? `<h4>Límites DANE · MGN 2025</h4><div class="row"><span>${lineSw(Y.dep.line, 1.5)}Departamentos</span></div><small>Seleccione un departamento en el filtro o con un clic en el mapa.</small>`
+    : `<h4>Límites DANE · MGN 2025</h4><div class="row"><span>${lineSw(Y.dep.line, 3)}Departamento seleccionado</span></div><div class="row"><span>${lineSw(Y.mun.line, 1)}Municipios</span></div>${S.d.mun?`<div class="row"><span><i class="sw" style="background:${rgb(Y.sel.fill)};border:2px solid ${rgb(Y.sel.line)}"></i>Municipio seleccionado</span></div>`:""}<div class="row"><span>${lineSw(Y.other.line, 1)}Otros departamentos</span></div>`;
+}
+function renderDepMap(){
+  if(!MAPS.dep.map) return;
+  const key = S.d.mun || S.d.dep || "all";
+  if(key!==S.depFitKey) fitDep();   // al terminar el ajuste, «moveend» vuelve a dibujar los límites
+  daneRefresh();
+  renderDepLegend();
+}
+
+/* ================= Módulo departamental: fichas ================= */
+function depRecords(){ return S.d.dep ? S.recs.filter(r=>r.codDep===S.d.dep) : []; }
+function renderDepHead(){
+  const d = S.DEP.get(S.d.dep);
+  if(!d){ fichaHead("#fheadDep", "Seleccione un departamento", []); return; }
+  // Total de municipios: información territorial oficial del DANE (MGN 2025), no los municipios con registros
+  fichaHead("#fheadDep", d.name, [["Municipios", '<span class="muted">…</span>']]);
+  const dep = S.d.dep;
+  daneMunicipios(dep).then(list=>{
+    if(dep!==S.d.dep) return;
+    const faltan = list.filter(a=>!d.muns.has(a.MPIO_CDPMP)), codes = new Set(list.map(a=>a.MPIO_CDPMP)), sobran = [...d.muns].filter(c=>!codes.has(c));
+    // La correspondencia de códigos queda como dato de consulta (tooltip), no como mensaje en el encabezado
+    const diff = [faltan.length ? `Sin registros en la capa del ICA: ${faltan.map(a=>`${a.MPIO_CNMBRE} (${a.MPIO_CDPMP})`).join(", ")}.` : "",
+                  sobran.length ? `En la capa del ICA pero no en el MGN 2025: ${sobran.map(c=>`${(S.MUN.get(c)||{}).name||c} (${c})`).join(", ")}.` : ""].join(" ").trim();
+    const tip = "Total oficial de municipios del departamento según el Marco Geoestadístico Nacional 2025 del DANE." + (diff ? " " + diff : "");
+    fichaHead("#fheadDep", d.name, [["Municipios", `${fmtN(list.length)} <button class="info" type="button" data-tip="${esc(tip)}" aria-label="${esc(tip)}">i</button>`]]);
+  }).catch(err=>{
+    // Sin respuesta del DANE: se usa el número de municipios de la capa del ICA y el diagnóstico queda en la consola
+    console.warn("DANE MGN 2025 no disponible para el total de municipios:", err && err.message);
+    if(dep===S.d.dep) fichaHead("#fheadDep", d.name, [["Municipios", fmtN(d.muns.size)]]);
+  });
+}
+function renderDepFicha(R){
+  // Municipio seleccionado
+  const card = $("#munCard");
+  if(!S.d.mun){ card.hidden = true; return; }
+  card.hidden = false;
+  const m = S.MUN.get(S.d.mun), rs = R.filter(r=>r.codMun===S.d.mun).sort((a,b)=>CAT_ORDER[a.cat2]-CAT_ORDER[b.cat2]||a.dis.localeCompare(b.dis,"es"));
+  const link = r => r.url ? `<a class="src" href="${esc(r.url)}" target="_blank" rel="noopener">Fuente ↗</a>` : "";
+  $("#munFicha").innerHTML = `<div><div class="title">${esc(m.name)}</div><div class="sub"><span class="mono">${m.cod}</span> · ${esc(m.cat||"")}${m.pdet?" · PDET":""}${m.zomac?" · ZOMAC":""}${m.reg && fold(m.reg)!=="no aplica" ? " · Subregión "+esc(m.reg) : ""}</div></div>
+    <dl class="facts"><dt>Enfermedades con presencia</dt><dd>${fmtN(rs.filter(r=>r.cat2==="pres").length)} de ${fmtN(rs.length)}</dd></dl>
+    <div class="mlist">${rs.map(r=>`<div class="r"><span>${esc(r.dis)}<span class="tag ${r.clas}">${CLAS_TAG[r.clas]}</span><br><small class="muted">${fmtD(r.fec)} · ${esc(/\(([^)]+)\)\s*$/.test(r.fue) ? r.fue.match(/\(([^)]+)\)\s*$/)[1] : r.fue)} ${link(r)}</small></span><span class="st"><i class="dot" style="background:var(${CATS.find(c=>c.k===r.cat2).v})"></i>${esc(r.est)}</span></div>`).join("")}</div>
+    <button class="btn ghost sm" type="button" id="munBack">Volver a ${esc(m.dep)}</button>`;
+  $("#munBack").addEventListener("click", ()=>setD("mun",""));
+}
 
 /* ================= Gráficos ================= */
 function legendHTML(items){ return items.map(([lab, col, cls])=>`<span><i class="sw${cls?" "+cls:""}" style="${col?`background:${col}`:""}"></i>${lab}</span>`).join(""); }
-function barsHTML(rows, {max, onClickAttr, unit=""}){
+function barsHTML(rows, {max, onClickAttr}){
   if(!rows.length) return '<div class="empty">Sin datos para la selección.</div>';
   return '<div class="bars">' + rows.map(r=>{
     const segs = (r.segs||[]).map(s=>`<span style="width:${max?s.v/max*100:0}%;background:${s.c}"></span>`).join("");
-    const ghost = r.ghost!=null ? `<span class="ghost" style="width:${max?r.ghost/max*100:0}%"></span>` : "";
     const tag = r.click ? "button" : "div";
     return `<${tag} class="bar${r.click?"":" static"}${r.on?" on":""}${r.dim?" dim":""}" ${r.click?`type="button" ${onClickAttr}="${esc(r.key)}"`:""} data-tip="${esc(r.tip)}" aria-label="${esc(r.aria||r.tip)}">
-      <span class="l">${r.labelHTML||esc(r.label)}</span><span class="t">${ghost}<span style="display:flex;position:relative;width:100%">${segs}</span></span><span class="val">${r.valTxt}</span></${tag}>`;
+      <span class="l">${r.labelHTML||esc(r.label)}</span><span class="t"><span style="display:flex;position:relative;width:100%">${segs}</span></span><span class="val">${r.valTxt}</span></${tag}>`;
   }).join("") + "</div>";
 }
-function renderCharts(A){
-  const presC = css("--st-pres"), noneC = css("--st-libre"), brandC = css("--st-libre");
-  const deps = [...A.byDep.entries()].map(([cod,d])=>({cod, name:(S.DEP.get(cod)||{}).name||cod, d, U:(S.DEP.get(cod)||{muns:new Set()}).muns.size}));
-  // G2 · municipios con presencia y sin presencia (libre) por enfermedad; porcentaje sobre municipios con registro o cantidad
-  const pct2 = S.mode.g2==="pct";
-  const dis = [...A.byDis.entries()].map(([k,s])=>({k, s, tot:s.mun.size, otro:s.mun.size - s.pres.size - s.libre.size}))
-    .sort((a,b)=>(pct2 ? b.s.pres.size/b.tot - a.s.pres.size/a.tot : b.s.pres.size - a.s.pres.size) || a.k.localeCompare(b.k,"es"));
-  const max2 = pct2 ? 100 : Math.max(0,...dis.map(x=>x.tot));
-  const otroC = css("--st-otro");
-  $("#g2sub").textContent = pct2 ? "Porcentaje de municipios con registro de cada enfermedad según su estado (barras al 100 %). Clic para seleccionar la enfermedad." : "Número de municipios de cada enfermedad: en rojo con presencia y en verde sin presencia (libre). El valor indica con presencia / total de municipios. Clic para seleccionar la enfermedad.";
-  $("#g2l").innerHTML = legendHTML([["Con presencia", presC],["Sin presencia (libre)", noneC]].concat(dis.some(x=>x.otro>0)?[["Otro estado", otroC]]:[])) + '<span class="muted">CO control oficial · VE vigilancia especial · NL no listada en Arts. 5–6</span>';
-  $("#g2").innerHTML = barsHTML(dis.map(x=>{ const f = v => pct2 ? (x.tot ? v/x.tot*100 : 0) : v;
-    return {key:x.k, click:true, on:S.f.dis===x.k, dim:S.f.dis && S.f.dis!==x.k,
-      labelHTML:`${esc(x.k)}<span class="tag ${clasOf(x.k)}">${CLAS_TAG[clasOf(x.k)]}</span>`,
-      segs:[{v:f(x.s.pres.size), c:presC},{v:f(x.s.libre.size), c:noneC}].concat(x.otro>0?[{v:f(x.otro), c:otroC}]:[]),
-      valTxt: pct2 ? fmtP(x.s.pres.size, x.tot) : `${fmtN(x.s.pres.size)} / ${fmtN(x.tot)}`,
-      tip:`${x.k} · ${CLAS[clasOf(x.k)]}: con presencia ${fmtN(x.s.pres.size)} (${fmtP(x.s.pres.size,x.tot)}) · sin presencia (libre) ${fmtN(x.s.libre.size)} (${fmtP(x.s.libre.size,x.tot)})` + (x.otro>0?` · otro estado ${fmtN(x.otro)}`:"") + ` · total ${fmtN(x.tot)} municipios.`}; }), {max:max2, onClickAttr:"data-dis"});
-  // G3
-  const unitMun = !!A.single;
-  const pct3 = S.mode.g3==="pct";
-  $("#g3sub").textContent = (unitMun ? `Municipios de cada departamento según el estado reportado para ${A.single} (un municipio se cuenta una vez).` :
-    "Registros municipio–enfermedad de cada departamento según su estado (cada par se cuenta una vez). Seleccione una enfermedad para contar municipios.") + (pct3 ? " Barras al 100 %." : (unitMun ? " Barras en número de municipios; el valor indica con presencia / total de municipios del departamento." : " Barras en número de registros; el valor indica con presencia / total.")) + " Clic para filtrar.";
-  const catCol = Object.fromEntries(CATS.map(c=>[c.k, css(c.v)]));
-  const present = CATS.filter(c=>deps.some(x=>(unitMun?x.d.munCat:x.d.cats).get(c.k)));
-  $("#g3l").innerHTML = legendHTML(present.map(c=>[c.label, catCol[c.k]]));
-  const g3 = deps.map(x=>{ const m = unitMun ? x.d.munCat : x.d.cats; const tot = [...m.values()].reduce((a,b)=>a+b,0); return {x, m, tot, p:(m.get("pres")||0)/(tot||1)}; }).filter(o=>o.tot).sort((a,b)=>(pct3 ? b.p-a.p : (b.m.get("pres")||0)-(a.m.get("pres")||0) || b.tot-a.tot)||a.x.name.localeCompare(b.x.name,"es"));
-  const max3 = pct3 ? 100 : Math.max(0,...g3.map(o=>o.tot));
-  $("#g3").innerHTML = barsHTML(g3.map(o=>({key:o.x.cod, label:o.x.name, click:true, on:S.f.dep===o.x.cod, dim:S.f.dep && S.f.dep!==o.x.cod,
-      segs:present.filter(c=>o.m.get(c.k)).map(c=>({v:pct3 ? o.m.get(c.k)/o.tot*100 : o.m.get(c.k), c:catCol[c.k]})), valTxt: pct3 ? fmtP(o.m.get("pres")||0, o.tot) : `${fmtN(o.m.get("pres")||0)} / ${fmtN(o.tot)}`,
-      tip:`${o.x.name} (${seccional(o.x.cod,o.x.name)}): ` + present.filter(c=>o.m.get(c.k)).map(c=>`${c.label} ${fmtN(o.m.get(c.k))} (${fmtP(o.m.get(c.k),o.tot)})`).join(" · ") + (unitMun?" municipios":" registros")})), {max:max3, onClickAttr:"data-dep"});
-  // G5
-  const dates = [...A.byDate.entries()].filter(([k])=>k).sort((a,b)=>a[0].localeCompare(b[0]));
-  const max5 = Math.max(0,...dates.map(([,t])=>t.n));
+// Distribución territorial por enfermedad: un solo componente para ambos módulos.
+// opts: id (contenedor), mode (clave del selector), recs (registros del ámbito), U? , select (clic), selDis, mark (municipio a señalar)
+function renderDistribucion(o){
+  const presC = css("--st-pres"), libC = css("--st-libre"), otroC = css("--st-otro");
+  const by = new Map();
+  for(const r of o.recs){ let s = by.get(r.dis); if(!s){ s = {mun:new Set(), pres:new Set(), libre:new Set()}; by.set(r.dis, s); } s.mun.add(r.codMun); if(r.cat2==="pres") s.pres.add(r.codMun); else if(r.cat2==="libre") s.libre.add(r.codMun); }
+  const pct = S.mode[o.mode]==="pct", el = $("#"+o.id);
+  const dis = [...by.entries()].map(([k,s])=>({k, s, tot:s.mun.size, otro:s.mun.size - s.pres.size - s.libre.size}))
+    .sort((a,b)=>(pct ? b.s.pres.size/b.tot - a.s.pres.size/a.tot : b.s.pres.size - a.s.pres.size) || a.k.localeCompare(b.k,"es"));
+  const max = pct ? 100 : Math.max(0,...dis.map(x=>x.tot));
+  const markR = o.mark ? new Map(o.recs.filter(r=>r.codMun===o.mark).map(r=>[r.dis, r])) : null;
+  $("#"+o.id+"sub").textContent = (pct ? `Porcentaje de municipios${o.scope} de cada enfermedad según su estado (barras al 100 %).` : `Municipios${o.scope} de cada enfermedad: rojo con presencia, verde sin presencia (libre). Valor: con presencia / total.`)
+    + (o.markName ? ` El punto junto a cada enfermedad indica el estado en ${o.markName}.` : "") + (o.select ? " Clic para seleccionar la enfermedad." : "");
+  $("#"+o.id+"l").innerHTML = legendHTML([["Con presencia", presC],["Sin presencia (libre)", libC]].concat(dis.some(x=>x.otro>0)?[["Otro estado", otroC]]:[]));
+  el.innerHTML = barsHTML(dis.map(x=>{ const f = v => pct ? (x.tot ? v/x.tot*100 : 0) : v;
+    const mr = markR && markR.get(x.k);
+    const dot = mr ? `<i class="dot" style="background:var(${CATS.find(c=>c.k===mr.cat2).v});margin:0 6px 0 0" aria-hidden="true"></i>` : "";
+    return {key:x.k, click:!!o.select, on:o.selDis===x.k, dim:o.selDis && o.selDis!==x.k,
+      labelHTML:`${dot}${esc(x.k)}<span class="tag ${clasOf(x.k)}">${CLAS_TAG[clasOf(x.k)]}</span>`,
+      segs:[{v:f(x.s.pres.size), c:presC},{v:f(x.s.libre.size), c:libC}].concat(x.otro>0?[{v:f(x.otro), c:otroC}]:[]),
+      valTxt: pct ? fmtP(x.s.pres.size, x.tot) : `${fmtN(x.s.pres.size)} / ${fmtN(x.tot)}`,
+      tip:`${x.k} · ${CLAS[clasOf(x.k)]}: con presencia ${fmtN(x.s.pres.size)} (${fmtP(x.s.pres.size,x.tot)}) · sin presencia (libre) ${fmtN(x.s.libre.size)} (${fmtP(x.s.libre.size,x.tot)})` + (x.otro>0?` · otro estado ${fmtN(x.otro)}`:"") + ` · total ${fmtN(x.tot)} municipios.` + (mr ? ` ${o.markName}: ${mr.est}.` : "")}; }), {max, onClickAttr:"data-dis"});
+  if(o.select) el.querySelectorAll("[data-dis]").forEach(b=>b.addEventListener("click", ()=>o.select(b.dataset.dis)));
+}
+// Antigüedad de la información (Departamento): registros del ámbito por fecha de actualización
+function renderAntiguedad(R){
+  const by = new Map(); for(const r of R){ let t = by.get(r.iso); if(!t){ t = {n:0, dis:new Set(), fec:r.fec}; by.set(r.iso, t); } t.n++; t.dis.add(r.dis); }
+  $("#g5sub").textContent = `Registros de ${S.f.dis} por fecha de actualización (FEC_ACT), según los filtros de estado y fuente. Es la fecha de actualización del estatus, no la de un evento sanitario.`;
+  const dates = [...by.entries()].filter(([k])=>k).sort((a,b)=>a[0].localeCompare(b[0]));
+  const max = Math.max(0,...dates.map(([,t])=>t.n));
   const ageCol = ms => yearsAgo(ms) > CFG.staleYears ? css("--stale") : css("--brand");
   $("#g5").innerHTML = `<div class="lgd">${legendHTML([["Hasta "+CFG.staleYears+" años", css("--brand")],["Más de "+CFG.staleYears+" años", css("--stale")]])}</div>` + barsHTML(dates.map(([k,t])=>({key:k, label:`${fmtD(t.fec)} · ${(y=>y<1?"menos de 1 año":"hace "+y+(y===1?" año":" años"))(Math.floor(yearsAgo(t.fec)))}`, segs:[{v:t.n, c:ageCol(t.fec)}], valTxt:fmtN(t.n),
-      tip:`${fmtD(t.fec)} (hace ${yearsAgo(t.fec).toFixed(1).replace(".",",")} años): ${fmtN(t.n)} registros. Enfermedades: ${[...t.dis].sort().join(", ")}.`})), {max:max5})
-    + (A.byDate.has("") ? `<p class="note">${fmtN(A.byDate.get("").n)} registros sin fecha válida.</p>` : "");
-  for(const id of ["#g3"]) $(id).querySelectorAll("[data-dep]").forEach(b=>b.addEventListener("click", ()=>setF("dep", S.f.dep===b.dataset.dep ? "" : b.dataset.dep)));
-  $("#g2").querySelectorAll("[data-dis]").forEach(b=>b.addEventListener("click", ()=>setF("dis", S.f.dis===b.dataset.dis ? "" : b.dataset.dis)));
+      tip:`${fmtD(t.fec)} (hace ${yearsAgo(t.fec).toFixed(1).replace(".",",")} años): ${fmtN(t.n)} registros. Enfermedades: ${[...t.dis].sort().join(", ")}.`})), {max})
+    + (by.has("") ? `<p class="note">${fmtN(by.get("").n)} registros sin fecha válida.</p>` : "");
 }
 
-/* ================= Señales para revisión ================= */
-function renderRevision(A){
-  const out = [];
-  const deps = [...A.byDep.entries()].map(([cod,d])=>({cod, name:S.DEP.get(cod).name, U:S.DEP.get(cod).muns.size, p:d.pres.size})).filter(x=>x.p).sort((a,b)=>b.p/b.U-a.p/a.U||b.p-a.p).slice(0,5);
-  out.push(`<div><div class="lbl" style="margin-bottom:4px">Seccionales con mayor proporción de municipios con presencia</div>${deps.length ? `<div class="mlist">${deps.map(x=>`<div class="r"><button class="btn-link" type="button" data-dep="${x.cod}">${esc(x.name)}</button><span class="num">${fmtN(x.p)} de ${fmtN(x.U)} · <b>${fmtP(x.p,x.U)}</b></span></div>`).join("")}</div>` : '<p class="note">Ningún municipio con estatus «Con presencia» en la selección.</p>'}</div>`);
-  const stale = [...A.byDis.entries()].map(([k,s])=>({k, last:Math.max(...A.R.filter(r=>r.dis===k&&r.fec!=null).map(r=>r.fec))})).filter(x=>isFinite(x.last) && yearsAgo(x.last) > CFG.staleYears).sort((a,b)=>a.last-b.last);
-  out.push(`<div><div class="lbl" style="margin-bottom:4px">Estatus con más de ${CFG.staleYears} años sin actualizar</div>${stale.length ? `<div class="mlist">${stale.map(x=>`<div class="r"><span>${esc(x.k)}</span><span class="num">${fmtD(x.last)}</span></div>`).join("")}</div>` : '<p class="note">Ninguno en la selección.</p>'}</div>`);
-  const het = [...A.byDis.entries()].filter(([,s])=>s.fec.size>1).map(([k,s])=>`${esc(k)} (${s.fec.size} fechas)`);
-  const sinFre = A.R.filter(r=>fold(r.fre)==="sin informacion").length;
-  out.push(`<div><div class="lbl" style="margin-bottom:4px">Consistencia de la información</div><div class="klist">
-    <div><span>Enfermedades con fechas distintas entre municipios</span><b>${het.length||"Ninguna"}</b></div>${het.length?`<div class="note">${het.join(" · ")}</div>`:""}
-    <div><span>Registros sin frecuencia de actualización definida</span><b class="num">${fmtN(sinFre)} (${fmtP(sinFre, A.R.length)})</b></div></div></div>`);
-  $("#rev").innerHTML = `<div style="display:flex;flex-direction:column;gap:14px">${out.join("")}</div>`;
-  $("#rev").querySelectorAll("[data-dep]").forEach(b=>b.addEventListener("click", ()=>setF("dep", b.dataset.dep)));
-}
-
-/* ================= Tabla ================= */
+/* ================= Registros de la selección (componente compartido por Nacional y Departamento) ================= */
 const COLS = [
   {k:"codDep", t:"Cód. depto.", v:r=>r.codDep, cls:"mono"},
   {k:"dep", t:"Departamento", v:r=>r.dep},
@@ -1048,49 +1265,107 @@ const COLS = [
   {k:"fue", t:"Fuente", v:r=>r.fue},
   {k:"doc", t:"Soporte", v:r=>r.doc, h:r=>r.url?`<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.doc||"Ver")}</a>`:esc(r.doc)}
 ];
-function tableRows(){
-  const q = fold(S.t.q);
-  let rows = S.A.R;
-  if(q) rows = rows.filter(r=>fold([r.dep,r.mun,r.codMun,r.dis,r.est,r.fue,r.doc,r.fre,CLAS[r.clas],r.oid].join(" ")).includes(q));
-  const col = COLS.find(c=>c.k===S.t.sort) || COLS[1];
-  const dir = S.t.dir;
-  return rows.slice().sort((a,b)=>{ const x = col.v(a), y = col.v(b); const c = (typeof x==="number"&&typeof y==="number") ? x-y : String(x).localeCompare(String(y),"es",{numeric:true}); return c*dir || a.mun.localeCompare(b.mun,"es") || a.dis.localeCompare(b.dis,"es"); });
+// Cada instancia recibe sus filas (rows) y la descripción de su consulta (meta) para la exportación.
+function RecordsTable(id, {rows, meta, note}){
+  const st = {q:"", sort:"dep", dir:1, page:0, size:25, out:[]};
+  const root = $("#"+id);
+  root.innerHTML = `<header class="card-h"><h2>Registros de la selección</h2><span class="unit" data-r="u"></span></header>
+    <p class="card-d">${note}</p>
+    <div class="tbar">
+      <div class="field"><label for="${id}-q">Buscar en la tabla</label><input type="search" id="${id}-q" placeholder="Municipio, enfermedad, estado, soporte…"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-r="xlsx" type="button">Exportar Excel</button><button class="btn ghost" data-r="csv" type="button">Exportar CSV</button><button class="btn ghost" data-r="copy" type="button">Copiar CSV</button></div>
+    </div>
+    <div class="tscroll"><table class="data"><thead></thead><tbody></tbody></table></div>
+    <div class="pager"></div>`;
+  const q = s => root.querySelector(s);
+  q(`#${id}-q`).addEventListener("input", e=>{ st.q = e.target.value; st.page = 0; draw(); });
+  q('[data-r="xlsx"]').addEventListener("click", e=>exportXLSX(st.out, meta(), e.currentTarget));
+  q('[data-r="csv"]').addEventListener("click", e=>exportCSV(st.out, e.currentTarget));
+  q('[data-r="copy"]').addEventListener("click", e=>copyCSV(st.out, e.currentTarget));
+  function sorted(){
+    const t = fold(st.q); let R = rows();
+    if(t) R = R.filter(r=>fold([r.dep,r.mun,r.codMun,r.dis,r.est,r.fue,r.doc,r.fre,CLAS[r.clas]].join(" ")).includes(t));
+    const col = COLS.find(c=>c.k===st.sort) || COLS[1];
+    return R.slice().sort((a,b)=>{ const x = col.v(a), y = col.v(b); const c = String(x).localeCompare(String(y),"es",{numeric:true}); return c*st.dir || a.mun.localeCompare(b.mun,"es") || a.dis.localeCompare(b.dis,"es"); });
+  }
+  function draw(){
+    const R = st.out = sorted();
+    q('[data-r="u"]').textContent = fmtN(R.length) + " registros";
+    const pages = Math.max(1, Math.ceil(R.length/st.size)); if(st.page >= pages) st.page = pages-1;
+    const pr = R.slice(st.page*st.size, (st.page+1)*st.size);
+    q("thead").innerHTML = "<tr>" + COLS.map(c=>`<th scope="col" aria-sort="${st.sort===c.k?(st.dir>0?"ascending":"descending"):"none"}"><button type="button" data-s="${c.k}">${c.t}${st.sort===c.k?(st.dir>0?" ▲":" ▼"):""}</button></th>`).join("") + "</tr>";
+    q("tbody").innerHTML = pr.length ? pr.map(r=>"<tr>"+COLS.map(c=>`<td class="${c.cls||""}">${c.h?c.h(r):esc(c.v(r))}</td>`).join("")+"</tr>").join("") : `<tr><td colspan="${COLS.length}" class="empty">Sin registros para la selección y la búsqueda actuales.</td></tr>`;
+    q("thead").querySelectorAll("button[data-s]").forEach(b=>b.addEventListener("click", ()=>{ const k = b.dataset.s; if(st.sort===k) st.dir *= -1; else { st.sort = k; st.dir = 1; } draw(); }));
+    q(".pager").innerHTML = `<span class="muted">${fmtN(R.length)} registros · página ${st.page+1} de ${pages}</span>
+      <button class="btn ghost sm" type="button" data-p="prev" ${st.page===0?"disabled":""}>Anterior</button><button class="btn ghost sm" type="button" data-p="next" ${st.page>=pages-1?"disabled":""}>Siguiente</button>
+      <label class="muted" for="${id}-size">Filas</label><select id="${id}-size">${[25,50,100].map(n=>`<option${n===st.size?" selected":""}>${n}</option>`).join("")}</select>`;
+    q('[data-p="prev"]').onclick = ()=>{ st.page--; draw(); };
+    q('[data-p="next"]').onclick = ()=>{ st.page++; draw(); };
+    q(`#${id}-size`).onchange = e=>{ st.size = +e.target.value; st.page = 0; draw(); };
+  }
+  return {draw, reset(){ st.page = 0; }, state:st};
 }
-function renderTable(){
-  if(!S.A) return;
-  const rows = tableRows(); S.tRows = rows; $("#tblU").textContent = fmtN(rows.length) + " registros";
-  const pages = Math.max(1, Math.ceil(rows.length/S.t.size)); if(S.t.page >= pages) S.t.page = pages-1;
-  const pr = rows.slice(S.t.page*S.t.size, (S.t.page+1)*S.t.size);
-  $("#tbl thead").innerHTML = "<tr>" + COLS.map(c=>`<th scope="col" aria-sort="${S.t.sort===c.k?(S.t.dir>0?"ascending":"descending"):"none"}"><button type="button" data-s="${c.k}">${c.t}${S.t.sort===c.k?(S.t.dir>0?" ▲":" ▼"):""}</button></th>`).join("") + "</tr>";
-  $("#tbl tbody").innerHTML = pr.length ? pr.map(r=>"<tr>"+COLS.map(c=>`<td class="${c.cls||""}">${c.h?c.h(r):esc(c.v(r))}</td>`).join("")+"</tr>").join("") : `<tr><td colspan="${COLS.length}" class="empty">Sin registros para los filtros y la búsqueda actuales.</td></tr>`;
-  $("#tbl thead").querySelectorAll("button[data-s]").forEach(b=>b.addEventListener("click", ()=>{ const k = b.dataset.s; if(S.t.sort===k) S.t.dir *= -1; else { S.t.sort = k; S.t.dir = 1; } renderTable(); }));
-  $("#pager").innerHTML = `<span class="muted">${fmtN(rows.length)} registros · página ${S.t.page+1} de ${pages}</span>
-    <button class="btn ghost sm" type="button" id="pPrev" ${S.t.page===0?"disabled":""}>Anterior</button><button class="btn ghost sm" type="button" id="pNext" ${S.t.page>=pages-1?"disabled":""}>Siguiente</button>
-    <label class="muted" for="pSize">Filas</label><select id="pSize">${[25,50,100].map(n=>`<option${n===S.t.size?" selected":""}>${n}</option>`).join("")}</select>`;
-  $("#pPrev").onclick = ()=>{ S.t.page--; renderTable(); };
-  $("#pNext").onclick = ()=>{ S.t.page++; renderTable(); };
-  $("#pSize").onchange = e=>{ S.t.size = +e.target.value; S.t.page = 0; renderTable(); };
+const TABLES = {};
+function initTables(){
+  TABLES.nac = RecordsTable("tblNac", {rows:()=>S.A ? S.A.R : [],
+    note:"Cada fila es un registro de la capa: un municipio y una enfermedad con su estado. La exportación incluye los filtros del módulo y la búsqueda.",
+    meta:()=>[["Módulo","Nacional"],["Enfermedad",S.f.dis||"Todas"],["Estado sanitario",S.f.est||"Todos"],["Fuente",S.f.fue||"Todas"],["Búsqueda en la tabla",TABLES.nac.state.q||"—"]]});
+  TABLES.dep = RecordsTable("tblDep", {rows:()=>S.RD || [],
+    note:"Registros del departamento seleccionado o, si hay un municipio seleccionado, solo de ese municipio. La exportación incluye la búsqueda.",
+    meta:()=>[["Módulo","Departamento"],["Departamento",(S.DEP.get(S.d.dep)||{}).name||"—"],["Municipio",(S.MUN.get(S.d.mun)||{}).name||"Todos"],["Búsqueda en la tabla",TABLES.dep.state.q||"—"]]});
 }
-function csvText(){
-  const head = ["COD_DEP","NOM_DEP","SECCIONAL","COD_MUN","NOM_MUN","NOM_PRE","CLASIFICACION_RES_00018426","ESTADO","CATEGORIA_ESTADO","FEC_ACT","FRE_ACT","FUENTE","DOC_SOP","URL"];
+function renderTables(){ if(TABLES.nac){ TABLES.nac.draw(); TABLES.dep.draw(); } }
+
+/* ================= Exportación ================= */
+const EXPORT_HEAD = ["COD_DEP","NOM_DEP","SECCIONAL","COD_MUN","NOM_MUN","NOM_PRE","CLASIFICACION_RES_00018426","ESTADO","CATEGORIA_ESTADO","FEC_ACT","FRE_ACT","FUENTE","DOC_SOP","URL"];
+const exportRow = r => [r.codDep,r.dep,seccional(r.codDep,r.dep),r.codMun,r.mun,r.dis,CLAS[r.clas],r.est,CATS.find(c=>c.k===r.cat2).label,r.iso,r.fre,r.fue,r.doc,r.url];
+function csvText(R){
   const q = v => { const s = String(v==null?"":v); return /[;"\n\r]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s; };
-  const lines = [head.join(";")].concat(S.tRows.map(r=>[r.codDep,r.dep,seccional(r.codDep,r.dep),r.codMun,r.mun,r.dis,CLAS[r.clas],r.est,CATS.find(c=>c.k===r.cat2).label,r.iso,r.fre,r.fue,r.doc,r.url].map(q).join(";")));
-  return lines.join("\r\n");
+  return [EXPORT_HEAD.join(";")].concat(R.map(r=>exportRow(r).map(q).join(";"))).join("\r\n");
 }
-function exportCSV(){
-  const name = `ica_estatus_enfermedades_${new Date().toISOString().slice(0,10)}.csv`;
+function saveBlob(blob, name){
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 800);
+}
+const stamp = () => new Date().toISOString().slice(0,10);
+function exportCSV(R, btn){
+  try{ saveBlob(new Blob(["﻿" + csvText(R)], {type:"text/csv;charset=utf-8"}), `ica_estatus_enfermedades_${stamp()}.csv`); flash(btn, `Exportados ${fmtN(R.length)}`); }
+  catch(e){ flash(btn,"No se pudo exportar; use Copiar CSV"); }
+}
+async function copyCSV(R, btn){
+  try{ await navigator.clipboard.writeText(csvText(R)); flash(btn, `Copiados ${fmtN(R.length)}`); }
+  catch(e){ flash(btn,"El navegador no permitió copiar"); }
+}
+// Excel (.xlsx) con SheetJS, cargado solo al exportar. Hoja «Registros» con la selección y hoja «Consulta» con su descripción.
+const XLSX_URL = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+function loadXLSX(){
+  if(window.XLSX) return Promise.resolve(window.XLSX);
+  return loadXLSX.p || (loadXLSX.p = new Promise((res, rej)=>{ const s = document.createElement("script"); s.src = XLSX_URL; s.onload = ()=>res(window.XLSX); s.onerror = ()=>{ loadXLSX.p = null; rej(new Error("No cargó la librería de Excel")); }; document.head.appendChild(s); }));
+}
+async function exportXLSX(R, meta, btn){
+  btn.disabled = true; const label = btn.dataset.o || btn.textContent; btn.textContent = "Preparando…";
   try{
-    const blob = new Blob(["﻿" + csvText()], {type:"text/csv;charset=utf-8"});
-    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
-    setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
-    flash("#btnCsv", `Exportados ${fmtN(S.tRows.length)}`);
-  }catch(e){ flash("#btnCsv","No se pudo exportar; use Copiar CSV"); }
+    const X = await loadXLSX();
+    // FEC_ACT como fecha de Excel (número de serie con formato), a partir del día en hora de Bogotá
+    const serial = iso => { const [y,m,d] = iso.split("-").map(Number); return (Date.UTC(y,m-1,d) - Date.UTC(1899,11,30)) / 864e5; };
+    const rows = R.map(r=>{ const v = exportRow(r); v[9] = r.iso ? serial(r.iso) : ""; return v; });
+    const ws = X.utils.aoa_to_sheet([EXPORT_HEAD, ...rows]);
+    rows.forEach((v,i)=>{ const c = ws[X.utils.encode_cell({r:i+1, c:9})]; if(c && typeof c.v==="number"){ c.t = "n"; c.z = "yyyy-mm-dd"; } });
+    ws["!cols"] = [6,18,30,9,24,30,24,40,14,12,14,40,30,50].map(w=>({wch:w}));
+    ws["!autofilter"] = {ref:X.utils.encode_range({s:{r:0,c:0}, e:{r:rows.length, c:EXPORT_HEAD.length-1}})};
+    const ms = X.utils.aoa_to_sheet([
+      ["Tablero", "Estatus Sanitario Animal en Colombia"], ...meta, ["Registros exportados", rows.length],
+      ["Fuente de datos", CFG.service], ["Consulta del servicio", S.loadedAt ? S.loadedAt.toLocaleString("es-CO") : ""],
+      ["Nota", "FEC_ACT es la fecha de actualización del estatus, no la de un evento sanitario. La ausencia de registros no equivale a ausencia de la enfermedad."]
+    ]);
+    ms["!cols"] = [{wch:24},{wch:90}];
+    const wb = X.utils.book_new(); X.utils.book_append_sheet(wb, ws, "Registros"); X.utils.book_append_sheet(wb, ms, "Consulta");
+    const out = X.write(wb, {bookType:"xlsx", type:"array"});
+    saveBlob(new Blob([out], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}), `ica_estatus_enfermedades_${stamp()}.xlsx`);
+    btn.disabled = false; btn.textContent = label; flash(btn, `Exportados ${fmtN(rows.length)}`);
+  }catch(e){ console.error(e); btn.disabled = false; btn.textContent = label; flash(btn, "No se pudo generar el Excel; use CSV"); }
 }
-async function copyCSV(){
-  try{ await navigator.clipboard.writeText(csvText()); flash("#btnCopy", `Copiados ${fmtN(S.tRows.length)}`); }
-  catch(e){ flash("#btnCopy","El navegador no permitió copiar"); }
-}
-function flash(sel, txt){ const b = $(sel), o = b.dataset.o || b.textContent; b.dataset.o = o; b.textContent = txt; setTimeout(()=>{ b.textContent = o; }, 2200); }
+function flash(btn, txt){ const o = btn.dataset.o || btn.textContent; btn.dataset.o = o; btn.textContent = txt; setTimeout(()=>{ btn.textContent = o; }, 2200); }
 
 /* ================= Documentación en la interfaz ================= */
 function renderDoc(){
@@ -1098,7 +1373,7 @@ function renderDoc(){
   const discRows = S.diseases.map(d=>{ const n = NORMA[fold(d)]||{c:"sd"}; const rs = S.recs.filter(r=>r.dis===d); const pres = new Set(rs.filter(r=>r.cat2==="pres").map(r=>r.codMun)).size;
     const docs = [...new Set(rs.map(r=>r.doc))].join("; "); const fu = [...new Set(rs.map(r=>r.fue))].join("; ");
     return `<tr><td>${esc(d)}</td><td>${CLAS[n.c]}${n.res&&fold(n.res)!==fold(d)?`<br><span class="muted">En la resolución: ${esc(n.res)}</span>`:""}</td><td>${esc(n.esp||"—")}</td><td class="num">${fmtN(pres)}</td><td>${esc(fu)}</td><td>${esc(docs)}</td></tr>`; }).join("");
-  const fieldsUsed = [["COD_DEP","Código DANE del departamento (2 dígitos)","Filtro territorial, agregación departamental"],["NOM_DEP","Nombre del departamento","Etiqueta; seccional derivada"],["COD_MUN","Código DANE del municipio (5 dígitos)","Identificador territorial principal; conteos distintos"],["NOM_MUN","Nombre del municipio","Etiqueta"],["TIP_PRE","Tipo de presencia (Enfermedad / Plaga)","Regla de selección en la consulta"],["NOM_PRE","Nombre de la enfermedad","Filtro, gráficos, cruce normativo"],["ESTADO","Estatus sanitario reportado","Filtro, simbología, indicadores de presencia"],["FEC_ACT","Fecha de actualización (fecha)","Filtro por rango, antigüedad, última actualización"],["FRE_ACT","Frecuencia de actualización","Señales de revisión"],["FUENTE","Fuente (OMSA o ICA)","Filtro, trazabilidad"],["DOC_SOP · URL","Documento soporte y enlace","Trazabilidad en ventanas, tabla y exportación"],["NOM_REG · MUN_PDET · MUN_ZOMAC · CAT_MUN","Subregión PDET, marcas PDET/ZOMAC, categoría","Contexto en la ficha municipal"],[M.oid,"Identificador del registro","Trazabilidad con la fuente"]];
+  const fieldsUsed = [["COD_DEP","Código DANE del departamento (2 dígitos)","Filtro departamental; cruce con DPTO_CCDGO del DANE"],["NOM_DEP","Nombre del departamento","Etiqueta; seccional derivada"],["COD_MUN","Código DANE del municipio (5 dígitos)","Identificador territorial principal; conteos distintos; cruce con MPIO_CDPMP del DANE"],["NOM_MUN","Nombre del municipio","Etiqueta"],["TIP_PRE","Tipo de presencia (Enfermedad / Plaga)","Regla de selección en la consulta"],["NOM_PRE","Nombre de la enfermedad","Filtro, gráficos, cruce normativo"],["ESTADO","Estatus sanitario reportado","Filtro, simbología, indicadores de presencia"],["FEC_ACT","Fecha de actualización (fecha)","Antigüedad de la información, última actualización"],["FRE_ACT","Frecuencia de actualización","Ventanas, tabla y exportación"],["FUENTE","Fuente (OMSA o ICA)","Filtro, trazabilidad"],["DOC_SOP · URL","Documento soporte y enlace","Trazabilidad en ventanas, tabla y exportación"],["NOM_REG · MUN_PDET · MUN_ZOMAC · CAT_MUN","Subregión PDET, marcas PDET/ZOMAC, categoría","Contexto en la ficha municipal"],[M.oid,"Identificador del registro","Trazabilidad con la fuente"]];
   $("#doc").innerHTML = `
   <details open><summary>Diagnóstico de la fuente</summary>
     <ul>
@@ -1115,7 +1390,7 @@ function renderDoc(){
       <tr><td>OBJECTID repetidos</td><td class="num">${fmtN(Q.dupOid)}</td><td>Se conserva una copia.</td></tr>
       <tr><td>Pares municipio–enfermedad repetidos</td><td class="num">${fmtN(Q.dupPair)}</td><td>Se conservan; en el mapa prevalece «Con presencia» sobre «Libre».</td></tr>
       <tr><td>Estado vacío / fuente vacía</td><td class="num">${fmtN(Q.nullEst)} / ${fmtN(Q.nullFue)}</td><td>Se rotulan «Sin estado» / «Sin fuente».</td></tr>
-      <tr><td>Fecha vacía / fuera de rango</td><td class="num">${fmtN(Q.nullFec)} / ${fmtN(Q.badFec)}</td><td>Se excluyen al filtrar por fecha y se informan en el gráfico 5.</td></tr>
+      <tr><td>Fecha vacía / fuera de rango</td><td class="num">${fmtN(Q.nullFec)} / ${fmtN(Q.badFec)}</td><td>Se informan en el gráfico de antigüedad de la información.</td></tr>
       <tr><td>Código municipal no válido / prefijo distinto al departamento</td><td class="num">${fmtN(Q.badCod)} / ${fmtN(Q.badPref)}</td><td>Se reportan; el código DANE es la llave territorial.</td></tr>
       <tr><td>Códigos con más de un nombre de municipio</td><td class="num">${fmtN(Q.multiName)}</td><td>Se usa el primer nombre recibido.</td></tr>
       <tr><td>Textos con espacios sobrantes (p. ej. FRE_ACT, URL)</td><td class="num">${fmtN(Q.trims)}</td><td>Se recortan para filtrar y mostrar.</td></tr>
@@ -1139,8 +1414,8 @@ function renderDoc(){
       <li><strong>Enfermedades con presencia</strong> = conteo distinto de <code>NOM_PRE</code> con <code>ESTADO = 'Con presencia'</code>. <strong>Departamentos con presencia</strong> = conteo distinto de <code>COD_DEP</code> con al menos un municipio «Con presencia»; denominador: departamentos de la capa (o 1 si hay uno seleccionado).</li>
       <li><strong>Distribución por enfermedad</strong> = municipios distintos «Con presencia» y municipios distintos con estado que contiene «libre».</li>
       <li><strong>Última actualización</strong> = máximo de <code>FEC_ACT</code> (zona horaria de Bogotá).</li>
-      <li><strong>Mapa con varias enfermedades</strong> = número de enfermedades distintas con estado «Con presencia» en el municipio. <strong>Con una enfermedad</strong> = estado del municipio; si hubiera varios registros, prevalece «Con presencia».</li>
-      <li><strong>Gráfico 3</strong>: con una enfermedad cuenta municipios; con varias cuenta pares municipio–enfermedad, para no sumar un municipio más de una vez dentro de una misma enfermedad.</li>
+      <li><strong>Mapa nacional</strong> = estado de la enfermedad seleccionada en cada municipio; si hubiera varios registros, prevalece «Con presencia». Sin enfermedad seleccionada, el mapa no se colorea.</li>
+      <li><strong>Indicadores de municipios y departamentos</strong> = barra segmentada por estado de la enfermedad seleccionada (con presencia, libre, otro estado) sobre el universo territorial; el gris son unidades sin registro en la selección y no se interpreta como «Libre». Un departamento es «Libre» solo si todos sus municipios con registro son libres. <strong>Distribución en Departamento</strong> = municipios del departamento por enfermedad y estado; con un municipio seleccionado se señala su estado sobre la distribución departamental.</li>
       <li>Categorías de estado: «Con presencia» (rojo) y todo valor que contenga «libre» (verde), incluidas las zonas de fiebre aftosa con y sin vacunación. El texto completo de <code>ESTADO</code> se conserva en filtros, tabla y exportación.</li>
     </ul>
   </details>
@@ -1151,9 +1426,9 @@ function renderDoc(){
       <li>Los conteos y porcentajes describen la distribución territorial de estatus; no son prevalencia, incidencia ni riesgo.</li>
       <li><code>FEC_ACT</code> es la fecha de actualización del estatus; no es la fecha de diagnóstico, notificación o confirmación.</li>
       <li>Departamento y gerencia seccional se presentan en correspondencia 1 a 1 para el prototipo. Bogotá, D.C. aparece como unidad propia porque así viene en la fuente; su correspondencia seccional debe confirmarse.</li>
-      <li>Vista inicial: ${esc(CFG.defaultDisease)}. Restablecer filtros vuelve a esa vista; «Todas las enfermedades» muestra la síntesis de presencia.</li>
+      <li>El módulo Nacional abre con la primera enfermedad del filtro (orden: control oficial, vigilancia especial y no listadas; alfabético dentro de cada grupo). El módulo Departamento abre con Antioquia (código 05), lista los departamentos por código DANE y usa solo los filtros de departamento y municipio.</li>
       <li>Simbología alineada con la capa del Geoportal: «Con presencia» en rojo y todo estado que contenga «libre» en verde. La zona o condición de vacunación se lee en la ventana emergente, la leyenda y la tabla.</li>
-      <li>Las «Señales para revisión» orientan la validación de la información con las seccionales; no son alertas sanitarias.</li>
+      
     </ul>
   </details>
   <details><summary>Arquitectura, ejecución y limitaciones</summary>
@@ -1161,7 +1436,10 @@ function renderDoc(){
       <li>Archivo HTML autónomo con la identidad visual del ICA (Manual de Identidad Visual 2024): JavaScript sin compilación, Leaflet 1.9.4 para el mapa, gráficos en HTML/CSS. Un único modelo de datos en memoria alimenta mapa, indicadores, gráficos y tabla.</li>
       <li>Consultas: 1 a la estructura de la capa, 2 de conteo, ${Math.ceil(S.counts.enf/CFG.pageSize)} páginas de atributos sin geometría y 1 de geometrías GeoJSON (una por municipio). Los filtros se resuelven en el navegador, sin nuevas consultas.</li>
       <li>Ejecución: abrir el archivo en un navegador moderno con acceso a internet (services9.arcgis.com, cdnjs, Google Fonts, teselas de OpenStreetMap y Esri). Para publicarlo, copiarlo a cualquier servidor web; no requiere servidor de aplicaciones.</li>
-      <li>Mapas base: OpenStreetMap y satelital (Esri World Imagery, con topónimos opcionales). Si el tablero se abre como archivo local, OpenStreetMap se sirve desde OpenStreetMap France, porque tile.openstreetmap.org bloquea las peticiones sin página de origen; publicado en un servidor web usa tile.openstreetmap.org. Para uso intensivo conviene un servicio de teselas institucional.</li>
+      <li>Mapas base: OpenStreetMap (por defecto) y satélite (Esri World Imagery, con topónimos opcionales). Si el tablero se abre como archivo local, OpenStreetMap se sirve desde OpenStreetMap France, porque tile.openstreetmap.org bloquea las peticiones sin página de origen; publicado en un servidor web usa tile.openstreetmap.org. Para uso intensivo conviene un servicio de teselas institucional.</li>
+      <li>Límites administrativos del módulo departamental: servicio MGN 2025 del DANE (<code>Serv_CapasMGN_2025/MapServer</code>, capas 319 Departamento y 317 Municipio). El servicio no entrega geometrías en sus consultas, por eso los límites se dibujan con su operación <code>export</code> y simbología propia (<code>dynamicLayers</code>); la extensión y la selección por clic usan consultas sin geometría (JSONP, porque el servidor no habilita CORS). La información sanitaria sigue saliendo solo del servicio del ICA.</li>
+      <li>Correspondencia de códigos: al elegir un departamento se compara la lista de municipios del DANE (MPIO_CDPMP) con la de la capa del ICA (COD_MUN) y se informan las diferencias en la ficha.</li>
+      <li>Exportación de registros a Excel (.xlsx, librería SheetJS cargada al exportar) y CSV, con los filtros del módulo Nacional y la búsqueda de la tabla.</li>
       <li>Sin conexión con el servicio el tablero no muestra cifras; no hay datos simulados.</li>
       <li>La relación departamento–seccional y la clasificación normativa son tablas de configuración en el código (<code>NORMA</code>, <code>seccional()</code>); actualícelas si cambia la resolución o la estructura institucional.</li>
     </ul>
@@ -1183,14 +1461,25 @@ function initTips(){
 let raf = 0;
 function render(){ cancelAnimationFrame(raf); raf = requestAnimationFrame(doRender); }
 function doRender(){
-  const R = S.recs.filter(r=>match(r));
-  const A = aggregate(R); S.A = A;
-  renderFilters(); renderContext(A); renderKPIs(A); renderFicha(A);
-  styleMap(); fitMap();
-  renderCharts(A); renderRevision(A); renderTable();
+  // Nacional: un único conjunto filtrado alimenta indicadores, ficha, mapa y tabla
+  const A = aggregate(S.recs.filter(r=>match(r))); S.A = A;
+  renderFilters(); renderContext();
+  renderKPIs(A); renderFicha(A); styleMap(); renderAntiguedad(A.R);
+  renderDistribucion({id:"g2", mode:"g2", recs:S.recs.filter(r=>match(r,"dis")), scope:"", selDis:S.f.dis, select:v=>setF("dis", v)});
+  // Departamento: solo los filtros de departamento y municipio
+  const RD = depRecords();
+  S.RD = S.d.mun ? RD.filter(r=>r.codMun===S.d.mun) : RD;     // registros de la tabla departamental
+  if(S.d.dep!==S.headDep){ S.headDep = S.d.dep; renderDepHead(); }
+  renderDepFicha(RD);
+  // Distribución en Departamento: municipios del departamento; con un municipio, se conserva la distribución
+  // departamental y se señala el estado de ese municipio (un solo municipio no forma una distribución).
+  const dn = (S.DEP.get(S.d.dep)||{}).name, mn = (S.MUN.get(S.d.mun)||{}).name;
+  renderDistribucion({id:"g2d", mode:"g2d", recs:RD, scope: dn ? ` de ${dn}` : "", mark:S.d.mun, markName:mn});
+  renderTables();
+  if(S.tab==="departamento") renderDepMap();
   if(!renderDoc.done){ renderDoc(); renderDoc.done = true; }
 }
-$("#btnReload").addEventListener("click", ()=>{ renderDoc.done = false; if(geoLayer){ map.removeLayer(geoLayer); geoLayer = null; S.layers.clear(); } load(); });
+$("#btnReload").addEventListener("click", ()=>{ renderDoc.done = false; if(geoLayer){ MAPS.nac.map.removeLayer(geoLayer); geoLayer = null; S.layers.clear(); } load(); });
 if(!window.L){ setStatus("err","No cargó la librería del mapa"); }
 load();
 </script>
