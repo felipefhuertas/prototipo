@@ -78,6 +78,7 @@ button,input,select{font:inherit;color:inherit}
 .brand-txt p{margin:1px 0 0;color:var(--ink-2);font-size:.78rem}
 .cortes{display:grid;grid-template-columns:repeat(3,auto);gap:2px 18px;margin:0;align-items:start}
 .cortes dt{font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:800;white-space:nowrap}
+.cortes dd a{color:var(--brand-ink);text-decoration:underline;text-underline-offset:2px}
 .cortes dd{margin:0;font-weight:700;font-size:.78rem;line-height:1.3;max-width:180px}
 .status{display:inline-flex;align-items:center;gap:6px}
 .st-dot{width:9px;height:9px;border-radius:50%;background:var(--st-none);flex:none}
@@ -188,6 +189,12 @@ button,input,select{font:inherit;color:inherit}
 .kbar{display:flex}
 .kbar span{border-radius:0}
 .kbar span:first-child{border-radius:5px 0 0 5px}.kbar span:last-child{border-radius:0 5px 5px 0}.kbar span:only-child{border-radius:5px}
+.kvals{display:flex;flex-wrap:wrap;align-items:flex-end;gap:4px 18px;margin-top:6px}
+.kv{display:flex;flex-direction:column;gap:0;min-width:0}
+.kv .kl{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;color:var(--ink-2);font-weight:600}
+.kv b{font-size:1.6rem;font-weight:800;line-height:1.2;letter-spacing:-.01em}
+.kpi.hl .kv.main b{color:var(--st-pres)}
+.kv .sw{width:10px;height:10px}
 .klegend{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:.78rem;color:var(--ink-2)}
 .klegend span{display:inline-flex;align-items:center;gap:5px}
 .klegend b{color:var(--ink)}
@@ -348,7 +355,7 @@ a.src{display:inline-block;margin-top:4px;font-weight:800;color:#245a24}
     </div>
     <dl class="cortes">
       <div><dt>Fuente</dt><dd>Servicio Web Geográfico del Geoportal del ICA</dd></div>
-      <div><dt>Normativa</dt><dd>Res. ICA 00018426 de 2025</dd></div>
+      <div><dt>Normativa</dt><dd><a href="https://www.ica.gov.co/normatividad/normas-ica/resoluciones-oficinas-nacionales/2025/2025r00018426" target="_blank" rel="noopener" title="Abrir la Resolución ICA 00018426 de 2025 en ica.gov.co">Res. ICA 00018426 de 2025</a></dd></div>
       <div><dt>Estado del servicio</dt><dd><span class="status" id="svcPill" data-s="load" role="status" aria-live="polite"><i class="st-dot"></i><span id="svcTxt">Conectando…</span></span></dd></div>
     </dl>
   </div>
@@ -464,7 +471,6 @@ a.src{display:inline-block;margin-top:4px;font-weight:800;color:#245a24}
     </section>
   </div>
 </main>
-<footer class="foot in gut" id="foot"></footer>
 <div id="tip" hidden></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -575,7 +581,7 @@ async function load(){
     const meta = await getJSON("", {});
     const names = new Set((meta.fields||[]).map(f=>f.name));
     const miss = CFG.required.filter(f=>!names.has(f));
-    if(miss.length) throw new Error("La capa no tiene los campos esperados: " + miss.join(", ") + ".");
+    if(miss.length){ console.warn("Campos faltantes en el servicio:", miss); throw new Error("La estructura del servicio del ICA cambió y no se pueden leer los datos."); }
     const oid = meta.objectIdField || (meta.fields.find(f=>f.type==="esriFieldTypeOID")||{}).name;
     S.meta = {name:meta.name, geom:meta.geometryType, wkid:(meta.extent&&meta.extent.spatialReference||{}).latestWkid||(meta.extent&&meta.extent.spatialReference||{}).wkid, max:meta.maxRecordCount, caps:meta.capabilities, oid, fields:meta.fields, edit:meta.editingInfo&&meta.editingInfo.lastEditDate};
     boot("Contando registros…", 8);
@@ -608,7 +614,7 @@ async function load(){
     $("#boot").hidden = false; $("#boot").className = "card overlay err";
     $("#boot").innerHTML = `<h2>No fue posible consultar el servicio geográfico</h2>
       <p style="margin:0">${esc(e.message)}</p>
-      <p style="margin:0;font-size:13px">Causas habituales: equipo sin conexión, red institucional que bloquea <span class="mono">services9.arcgis.com</span>, o servicio fuera de línea. El tablero no muestra datos simulados: sin respuesta de la fuente no hay cifras.</p>
+      <p style="margin:0;font-size:13px">Causas habituales: equipo sin conexión, red institucional que bloquea el Geoportal del ICA, o servicio fuera de línea. El tablero no muestra datos simulados: sin respuesta de la fuente no hay cifras.</p>
       <button class="btn" type="button" onclick="load()">Reintentar</button>`;
     $("#filterbar").hidden = true;
   }finally{ $("#btnReload").disabled = false; }
@@ -869,9 +875,8 @@ function kpiBar(key, label, parts, U, unit, tip){
   const seg = `<div class="seg xs" role="group" aria-label="Unidad de ${esc(label)}"><button type="button" data-g="${key}" data-m="n" aria-pressed="${!pct}">Cantidad</button><button type="button" data-g="${key}" data-m="pct" aria-pressed="${pct}">%</button></div>`;
   const shown = parts.filter(p=>p.n>0);
   return `<div class="kpi${pres>0?" hl":""}"><div class="k"><span>${label} <button class="info" type="button" data-tip="${esc(tip)}" aria-label="Definición: ${esc(tip)}">i</button></span>${seg}</div>
-    <div class="v">${fmt(pres)}</div>
+    <div class="kvals">${[parts.find(p=>p.k==="pres"), ...shown.filter(p=>p.k!=="pres")].map(p=>`<div class="kv${p.k==="pres"?" main":""}"><span class="kl"><i class="sw" style="background:var(${p.v})"></i>${p.label}</span><b>${fmt(p.n)}</b></div>`).join("")}${sin>0 ? `<div class="kv"><span class="kl"><i class="sw" style="background:var(--line-2);border:1px solid var(--line)"></i>Sin registro</span><b>${fmt(sin)}</b></div>` : ""}</div>
     <div class="kbar" role="img" aria-label="${shown.map(p=>`${p.label} ${fmtN(p.n)}`).join(", ")} de ${fmtN(U)} ${unit}">${shown.map(p=>`<span style="width:${U ? p.n/U*100 : 0}%;background:var(${p.v})" data-tip="${esc(p.label)}: ${fmtN(p.n)} ${p.n===1 ? unit.replace(/s$/,"") : unit} (${fmtP(p.n,U)})"></span>`).join("")}</div>
-    <div class="klegend">${shown.map(p=>`<span><i class="sw" style="background:var(${p.v})"></i>${p.label} <b>${fmt(p.n)}</b></span>`).join("")}${sin>0 ? `<span><i class="sw" style="background:var(--line-2);border:1px solid var(--line)"></i>Sin registro en la selección <b>${fmt(sin)}</b></span>` : ""}</div>
     <div class="s">Universo: ${fmtN(U)} ${unit}</div></div>`;
 }
 const CAT_LABEL = {pres:"Con presencia", libre:"Libre", otro:"Otro estado"};
@@ -893,9 +898,9 @@ function renderKPIs(A){
   $("#kpis").innerHTML = !A.R.length ?
     `<div class="card empty" style="grid-column:1/-1"><strong>No hay registros para esta combinación de filtros.</strong><br>Cambie el estado sanitario o la fuente. La ausencia de registros no equivale a ausencia de la enfermedad.</div>` :
     [
-      kpiBar("kMun", "Municipios con presencia", P.mun, S.MUN.size, "municipios", "Municipios distintos (COD_MUN) con estado «Con presencia» para la enfermedad seleccionada, según los filtros de estado y fuente. Los segmentos muestran los estados reportados (rojo con presencia, verde libre); el gris son municipios sin registro en la selección. Denominador: municipios de la capa."),
-      kpiBar("kDep", "Departamentos con presencia", P.dep, S.DEP.size, "departamentos", "Departamentos distintos (COD_DEP) con al menos un municipio con estado «Con presencia» para la enfermedad seleccionada. Un departamento es «Libre» solo si todos sus municipios con registro son libres. Denominador: departamentos de la capa; cada uno corresponde a una gerencia seccional."),
-      tile("Última actualización", A.maxFec!=null ? fmtD(A.maxFec) : "—", A.minFec!=null ? `Más antigua: ${fmtD(A.minFec)}` : "Sin fechas válidas", "Fecha más reciente del campo FEC_ACT entre los registros filtrados. Es la fecha de actualización del estatus, no la fecha de un evento sanitario.")
+      kpiBar("kMun", "Municipios", P.mun, S.MUN.size, "municipios", "Municipios distintos con estado «Con presencia» para la enfermedad seleccionada, según los filtros de estado y fuente. Los segmentos muestran los estados reportados (rojo con presencia, verde libre); el gris son municipios sin registro en la selección. Denominador: municipios de la capa."),
+      kpiBar("kDep", "Departamentos", P.dep, S.DEP.size, "departamentos", "Departamentos distintos con al menos un municipio con estado «Con presencia» para la enfermedad seleccionada. Un departamento es «Libre» solo si todos sus municipios con registro son libres. Denominador: departamentos de la capa; cada uno corresponde a una gerencia seccional."),
+      tile("Última actualización", A.maxFec!=null ? fmtD(A.maxFec) : "—", A.minFec!=null ? `Más antigua: ${fmtD(A.minFec)}` : "Sin fechas válidas", "Fecha de actualización más reciente entre los registros filtrados. Es la fecha de actualización del estatus, no la fecha de un evento sanitario.")
     ].join("");
 }
 
@@ -903,7 +908,8 @@ function renderKPIs(A){
 // Solo con una enfermedad seleccionada: nombre, especie y municipios por estado reportado (valores reales de ESTADO).
 // Encabezado «Ficha territorial» compartido por ambos módulos
 function fichaHead(id, title, meta, note){
-  $(id).innerHTML = `<span class="eyebrow">Ficha territorial</span><h2>${esc(title)}</h2>
+  const eyebrow = id==="#fheadNac" ? "Enfermedad, infección o infestación" : "Ficha territorial";
+  $(id).innerHTML = `<span class="eyebrow">${eyebrow}</span><h2>${esc(title)}</h2>
     <dl class="fmeta">${meta.map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>${note ? `<p class="note">${note}</p>` : ""}`;
 }
 function renderFicha(A){
@@ -1229,22 +1235,22 @@ function renderDistribucion(o){
   const munR = o.mun ? new Map(o.recs.map(r=>[r.dis, r])) : null;
   $("#"+o.id+"sub").textContent = o.mun
     ? `Estado de cada enfermedad en ${o.mun}: rojo con presencia, verde libre. Las enfermedades con presencia aparecen primero; el detalle está en la ficha del municipio.`
-    : (pct ? `Porcentaje de municipios${o.scope} de cada enfermedad según su estado (barras al 100 %).` : `Municipios${o.scope} de cada enfermedad: rojo con presencia, verde sin presencia (libre). Valor: con presencia / total.`)
+    : (pct ? `Porcentaje de municipios${o.scope} de cada enfermedad según su estado (barras al 100 %).` : `Municipios${o.scope} de cada enfermedad: rojo con presencia, verde libre. Valor: con presencia / total.`)
       + (o.select ? " Clic para seleccionar la enfermedad." : "");
-  $("#"+o.id+"l").innerHTML = legendHTML([["Con presencia", presC],["Sin presencia (libre)", libC]].concat(dis.some(x=>x.otro>0)?[["Otro estado", otroC]]:[]));
+  $("#"+o.id+"l").innerHTML = legendHTML([["Con presencia", presC],["Libre", libC]].concat(dis.some(x=>x.otro>0)?[["Otro estado", otroC]]:[]));
   el.innerHTML = barsHTML(dis.map(x=>{ const f = v => pct ? (x.tot ? v/x.tot*100 : 0) : v;
     const mr = munR && munR.get(x.k);
     return {key:x.k, click:!!o.select, on:o.selDis===x.k, dim:o.selDis && o.selDis!==x.k,
       labelHTML:`${esc(x.k)}<span class="tag ${clasOf(x.k)}">${CLAS_TAG[clasOf(x.k)]}</span>`,
       segs:[{v:f(x.s.pres.size), c:presC},{v:f(x.s.libre.size), c:libC}].concat(x.otro>0?[{v:f(x.otro), c:otroC}]:[]),
       valTxt: mr ? (mr.cat2==="pres" ? "Presencia" : mr.cat2==="libre" ? "Libre" : "Otro") : pct ? fmtP(x.s.pres.size, x.tot) : `${fmtN(x.s.pres.size)} / ${fmtN(x.tot)}`,
-      tip:`${x.k} · ${CLAS[clasOf(x.k)]}: con presencia ${fmtN(x.s.pres.size)} (${fmtP(x.s.pres.size,x.tot)}) · sin presencia (libre) ${fmtN(x.s.libre.size)} (${fmtP(x.s.libre.size,x.tot)})` + (x.otro>0?` · otro estado ${fmtN(x.otro)}`:"") + ` · total ${fmtN(x.tot)} municipios.`, ...(mr ? {tip:`${x.k} en ${o.mun}: ${mr.est} · actualización ${fmtD(mr.fec)} · ${mr.fue}.`} : {})}; }), {max, onClickAttr:"data-dis"});
+      tip:`${x.k} · ${CLAS[clasOf(x.k)]}: con presencia ${fmtN(x.s.pres.size)} (${fmtP(x.s.pres.size,x.tot)}) · libre ${fmtN(x.s.libre.size)} (${fmtP(x.s.libre.size,x.tot)})` + (x.otro>0?` · otro estado ${fmtN(x.otro)}`:"") + ` · total ${fmtN(x.tot)} municipios.`, ...(mr ? {tip:`${x.k} en ${o.mun}: ${mr.est} · actualización ${fmtD(mr.fec)} · ${mr.fue}.`} : {})}; }), {max, onClickAttr:"data-dis"});
   if(o.select) el.querySelectorAll("[data-dis]").forEach(b=>b.addEventListener("click", ()=>o.select(b.dataset.dis)));
 }
 // Antigüedad de la información (Departamento): registros del ámbito por fecha de actualización
 function renderAntiguedad(R){
   const by = new Map(); for(const r of R){ let t = by.get(r.iso); if(!t){ t = {n:0, dis:new Set(), fec:r.fec}; by.set(r.iso, t); } t.n++; t.dis.add(r.dis); }
-  $("#g5sub").textContent = `Registros de ${S.f.dis} por fecha de actualización (FEC_ACT), según los filtros de estado y fuente. Es la fecha de actualización del estatus, no la de un evento sanitario.`;
+  $("#g5sub").textContent = `Registros de ${S.f.dis} por fecha de actualización, según los filtros de estado y fuente. Es la fecha de actualización del estatus, no la de un evento sanitario.`;
   const dates = [...by.entries()].filter(([k])=>k).sort((a,b)=>a[0].localeCompare(b[0]));
   const max = Math.max(0,...dates.map(([,t])=>t.n));
   const ageCol = ms => yearsAgo(ms) > CFG.staleYears ? css("--stale") : css("--brand");
@@ -1319,7 +1325,7 @@ function initTables(){
 function renderTables(){ if(TABLES.nac){ TABLES.nac.draw(); TABLES.dep.draw(); } }
 
 /* ================= Exportación ================= */
-const EXPORT_HEAD = ["COD_DEP","NOM_DEP","SECCIONAL","COD_MUN","NOM_MUN","NOM_PRE","CLASIFICACION_RES_00018426","ESTADO","CATEGORIA_ESTADO","FEC_ACT","FRE_ACT","FUENTE","DOC_SOP","URL"];
+const EXPORT_HEAD = ["Código departamento","Departamento","Gerencia seccional","Código municipio","Municipio","Enfermedad","Clasificación (Res. ICA 00018426 de 2025)","Estado sanitario","Categoría de estado","Fecha de actualización","Frecuencia de actualización","Fuente","Documento soporte","Enlace a la fuente"];
 const exportRow = r => [r.codDep,r.dep,seccional(r.codDep,r.dep),r.codMun,r.mun,r.dis,CLAS[r.clas],r.est,CATS.find(c=>c.k===r.cat2).label,r.iso,r.fre,r.fue,r.doc,r.url];
 function csvText(R){
   const q = v => { const s = String(v==null?"":v); return /[;"\n\r]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s; };
@@ -1358,7 +1364,7 @@ async function exportXLSX(R, meta, btn){
     const ms = X.utils.aoa_to_sheet([
       ["Tablero", "Estatus Sanitario Animal en Colombia"], ...meta, ["Registros exportados", rows.length],
       ["Fuente de datos", CFG.service], ["Consulta del servicio", S.loadedAt ? S.loadedAt.toLocaleString("es-CO") : ""],
-      ["Nota", "FEC_ACT es la fecha de actualización del estatus, no la de un evento sanitario. La ausencia de registros no equivale a ausencia de la enfermedad."]
+      ["Nota", "La fecha de actualización corresponde al estatus, no la de un evento sanitario. La ausencia de registros no equivale a ausencia de la enfermedad."]
     ]);
     ms["!cols"] = [{wch:24},{wch:90}];
     const wb = X.utils.book_new(); X.utils.book_append_sheet(wb, ws, "Registros"); X.utils.book_append_sheet(wb, ms, "Consulta");
@@ -1371,82 +1377,44 @@ function flash(btn, txt){ const o = btn.dataset.o || btn.textContent; btn.datase
 
 /* ================= Documentación en la interfaz ================= */
 function renderDoc(){
-  const Q = S.Q, M = S.meta;
   const discRows = S.diseases.map(d=>{ const n = NORMA[fold(d)]||{c:"sd"}; const rs = S.recs.filter(r=>r.dis===d); const pres = new Set(rs.filter(r=>r.cat2==="pres").map(r=>r.codMun)).size;
     const docs = [...new Set(rs.map(r=>r.doc))].join("; "); const fu = [...new Set(rs.map(r=>r.fue))].join("; ");
     return `<tr><td>${esc(d)}</td><td>${CLAS[n.c]}${n.res&&fold(n.res)!==fold(d)?`<br><span class="muted">En la resolución: ${esc(n.res)}</span>`:""}</td><td>${esc(n.esp||"—")}</td><td class="num">${fmtN(pres)}</td><td>${esc(fu)}</td><td>${esc(docs)}</td></tr>`; }).join("");
-  const fieldsUsed = [["COD_DEP","Código DANE del departamento (2 dígitos)","Filtro departamental; cruce con DPTO_CCDGO del DANE"],["NOM_DEP","Nombre del departamento","Etiqueta; seccional derivada"],["COD_MUN","Código DANE del municipio (5 dígitos)","Identificador territorial principal; conteos distintos; cruce con MPIO_CDPMP del DANE"],["NOM_MUN","Nombre del municipio","Etiqueta"],["TIP_PRE","Tipo de presencia (Enfermedad / Plaga)","Regla de selección en la consulta"],["NOM_PRE","Nombre de la enfermedad","Filtro, gráficos, cruce normativo"],["ESTADO","Estatus sanitario reportado","Filtro, simbología, indicadores de presencia"],["FEC_ACT","Fecha de actualización (fecha)","Antigüedad de la información, última actualización"],["FRE_ACT","Frecuencia de actualización","Ventanas, tabla y exportación"],["FUENTE","Fuente (OMSA o ICA)","Filtro, trazabilidad"],["DOC_SOP · URL","Documento soporte y enlace","Trazabilidad en ventanas, tabla y exportación"],["NOM_REG · MUN_PDET · MUN_ZOMAC · CAT_MUN","Subregión PDET, marcas PDET/ZOMAC, categoría","Contexto en la ficha municipal"],[M.oid,"Identificador del registro","Trazabilidad con la fuente"]];
+  const RES = `<a href="https://www.ica.gov.co/normatividad/normas-ica/resoluciones-oficinas-nacionales/2025/2025r00018426" target="_blank" rel="noopener">Resolución ICA 00018426 de 2025</a>`;
   $("#doc").innerHTML = `
-  <details open><summary>Diagnóstico de la fuente</summary>
+  <details open><summary>Fuentes de información</summary>
     <ul>
-      <li>Servicio: <a href="${CFG.service.replace(/\/0$/,"")}" target="_blank" rel="noopener"><code>ICA_EPXXX_Pg/FeatureServer</code></a>, capa 0 «${esc(M.name)}». Geometría ${esc(M.geom)}, referencia espacial WKID ${esc(M.wkid)}; el mapa la solicita en WGS 84 (4326), generalizada a ${CFG.geomOffset}°.</li>
-      <li>Capacidades: <code>${esc(M.caps)}</code>. Máximo ${fmtN(M.max)} registros por consulta: la descarga se hace paginada (<code>resultOffset</code>).</li>
-      <li>Registros en la capa: ${fmtN(S.counts.all)}. Con <code>${esc(CFG.where)}</code>: ${fmtN(S.counts.enf)}. Excluidos (plagas y otras categorías): ${fmtN(S.counts.otros)}. El filtro se aplica en la consulta al servicio.</li>
-      <li>Estructura observada: un registro por municipio y enfermedad (${fmtN(S.MUN.size)} municipios × ${fmtN(S.diseases.length)} enfermedades = ${fmtN(S.MUN.size*S.diseases.length)}; cargados ${fmtN(S.recs.length)}). Por eso la capa es una matriz de estatus oficial y no un registro de casos o brotes.</li>
-      <li>Universo territorial: ${fmtN(S.MUN.size)} municipios en ${fmtN(S.DEP.size)} departamentos (incluye Bogotá, D.C. como unidad propia, código 11). ${esc(CFG.dane.nota)}</li>
+      <li><strong>Estatus sanitario:</strong> Servicio Web Geográfico del Geoportal del ICA. El tablero consulta solo los registros de enfermedades (se excluyen las plagas) y muestra los datos tal como los publica el ICA, sin correcciones manuales.</li>
+      <li><strong>Clasificación de las enfermedades:</strong> ${RES}, por la cual se establecen las enfermedades de control oficial y bajo vigilancia especial.</li>
+      <li><strong>Límites departamentales y municipales</strong> del módulo Departamento: Marco Geoestadístico Nacional 2025 del DANE.</li>
+      <li>La información cubre ${fmtN(S.MUN.size)} municipios de ${fmtN(S.DEP.size)} departamentos y ${fmtN(S.diseases.length)} enfermedades. Cada municipio tiene un estado reportado para cada enfermedad.</li>
     </ul>
   </details>
-  <details><summary>Calidad de datos (calculada en cada carga)</summary>
-    <div class="tw"><table><thead><tr><th>Control</th><th>Resultado</th><th>Tratamiento</th></tr></thead><tbody>
-      <tr><td>Registros con TIP_PRE distinto de «Enfermedad» recibidos</td><td class="num">${fmtN(Q.notEnf)}</td><td>Se descartan (doble control de la regla).</td></tr>
-      <tr><td>OBJECTID repetidos</td><td class="num">${fmtN(Q.dupOid)}</td><td>Se conserva una copia.</td></tr>
-      <tr><td>Pares municipio–enfermedad repetidos</td><td class="num">${fmtN(Q.dupPair)}</td><td>Se conservan; en el mapa prevalece «Con presencia» sobre «Libre».</td></tr>
-      <tr><td>Estado vacío / fuente vacía</td><td class="num">${fmtN(Q.nullEst)} / ${fmtN(Q.nullFue)}</td><td>Se rotulan «Sin estado» / «Sin fuente».</td></tr>
-      <tr><td>Fecha vacía / fuera de rango</td><td class="num">${fmtN(Q.nullFec)} / ${fmtN(Q.badFec)}</td><td>Se informan en el gráfico de antigüedad de la información.</td></tr>
-      <tr><td>Código municipal no válido / prefijo distinto al departamento</td><td class="num">${fmtN(Q.badCod)} / ${fmtN(Q.badPref)}</td><td>Se reportan; el código DANE es la llave territorial.</td></tr>
-      <tr><td>Códigos con más de un nombre de municipio</td><td class="num">${fmtN(Q.multiName)}</td><td>Se usa el primer nombre recibido.</td></tr>
-      <tr><td>Textos con espacios sobrantes (p. ej. FRE_ACT, URL)</td><td class="num">${fmtN(Q.trims)}</td><td>Se recortan para filtrar y mostrar.</td></tr>
-      <tr><td>Frecuencia de actualización «Sin información»</td><td class="num">${fmtN(Q.freSin)}</td><td>Se muestra tal cual; señal de revisión.</td></tr>
-    </tbody></table></div>
+  <details><summary>Enfermedades y clasificación normativa</summary>
+    <p>Las enfermedades se clasificaron según los artículos 5 (control oficial) y 6 (vigilancia especial) de la ${RES}. Las que no figuran en esos artículos se identifican como «No listada».</p>
+    <div class="tw"><table><thead><tr><th>Enfermedad</th><th>Clasificación</th><th>Especie</th><th>Municipios con presencia</th><th>Fuente</th><th>Documento soporte</th></tr></thead><tbody>${discRows}</tbody></table></div>
+    <p>Enfermedades de control oficial de la resolución sin información en el servicio: ${NORMA_AUSENTES.map(a=>`${a[0]} (${a[1]})`).join(", ")}.</p>
   </details>
-  <details><summary>Cruce con la Resolución ICA 00018426 de 2025</summary>
-    <p>Las enfermedades de la capa se clasificaron con un mapeo manual de nombres contra los artículos 5 (control oficial) y 6 (vigilancia especial). Las que no figuran en esos artículos se marcan «No listada»; podrían ser de declaración obligatoria por la lista de la OMSA (art. 4), pero esa lista no está en el documento suministrado.</p>
-    <div class="tw"><table><thead><tr><th>Enfermedad en la capa</th><th>Clasificación</th><th>Especie (resolución)</th><th>Municipios con presencia</th><th>Fuente</th><th>Documento soporte</th></tr></thead><tbody>${discRows}</tbody></table></div>
-    <p>Enfermedades de control oficial de la resolución que no aparecen en la capa: ${NORMA_AUSENTES.map(a=>`${a[0]} (${a[1]})`).join(", ")}. Las enfermedades bajo vigilancia especial distintas de las cuatro anteriores tampoco tienen registros en la capa.</p>
-  </details>
-  <details><summary>Diccionario de atributos usados</summary>
-    <div class="tw"><table><thead><tr><th>Campo</th><th>Contenido</th><th>Uso en el tablero</th></tr></thead><tbody>${fieldsUsed.map(r=>`<tr><td><code>${esc(r[0])}</code></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody></table></div>
-  </details>
-  <details><summary>Fórmulas de los indicadores</summary>
+  <details><summary>Cómo se calculan los indicadores</summary>
     <ul>
-      <li><strong>Registros</strong> = número de filas que cumplen los filtros.</li>
-      <li><strong>Municipios con registros</strong> = conteo distinto de <code>COD_MUN</code> en la selección.</li>
-      <li><strong>Municipios con presencia</strong> = conteo distinto de <code>COD_MUN</code> con <code>ESTADO = 'Con presencia'</code>.</li>
-      <li><strong>Universo de referencia</strong> = municipios de la capa en el ámbito (país, departamento o municipio). Porcentaje = municipios / universo × 100.</li>
-      <li><strong>Enfermedades con presencia</strong> = conteo distinto de <code>NOM_PRE</code> con <code>ESTADO = 'Con presencia'</code>. <strong>Departamentos con presencia</strong> = conteo distinto de <code>COD_DEP</code> con al menos un municipio «Con presencia»; denominador: departamentos de la capa (o 1 si hay uno seleccionado).</li>
-      <li><strong>Distribución por enfermedad</strong> = municipios distintos «Con presencia» y municipios distintos con estado que contiene «libre».</li>
-      <li><strong>Última actualización</strong> = máximo de <code>FEC_ACT</code> (zona horaria de Bogotá).</li>
-      <li><strong>Mapa nacional</strong> = estado de la enfermedad seleccionada en cada municipio; si hubiera varios registros, prevalece «Con presencia». Sin enfermedad seleccionada, el mapa no se colorea.</li>
-      <li><strong>Indicadores de municipios y departamentos</strong> = barra segmentada por estado de la enfermedad seleccionada (con presencia, libre, otro estado) sobre el universo territorial; el gris son unidades sin registro en la selección y no se interpreta como «Libre». Un departamento es «Libre» solo si todos sus municipios con registro son libres. <strong>Distribución en Departamento</strong> = municipios del departamento por enfermedad y estado; con un municipio seleccionado muestra el estado de cada enfermedad en ese municipio.</li>
-      <li>Categorías de estado: «Con presencia» (rojo) y todo valor que contenga «libre» (verde), incluidas las zonas de fiebre aftosa con y sin vacunación. El texto completo de <code>ESTADO</code> se conserva en filtros, tabla y exportación.</li>
+      <li><strong>Municipios:</strong> número de municipios con estado «Con presencia» para la enfermedad seleccionada. El porcentaje se calcula sobre el total de municipios.</li>
+      <li><strong>Departamentos:</strong> número de departamentos con al menos un municipio con estado «Con presencia». Un departamento se considera «Libre» solo si todos sus municipios con información son libres.</li>
+      <li><strong>Última actualización:</strong> fecha de actualización más reciente entre los registros consultados.</li>
+      <li><strong>Distribución territorial por enfermedad:</strong> municipios con estado «Con presencia» y municipios con estado «Libre» para cada enfermedad.</li>
+      <li><strong>Antigüedad de la información:</strong> número de registros según su fecha de actualización.</li>
+      <li>Se cuentan municipios y departamentos distintos, nunca filas repetidas. Los municipios se identifican por su código DANE.</li>
     </ul>
   </details>
-  <details><summary>Reglas de interpretación</summary>
+  <details><summary>Cómo interpretar la información</summary>
     <ul>
       <li>«Con presencia» es un estatus oficial del municipio para la enfermedad; no indica cuántos predios o animales están afectados.</li>
-      <li>Un municipio sin registros en la selección no se clasifica como libre. «Libre» solo se muestra cuando la capa lo reporta.</li>
-      <li>Los conteos y porcentajes describen la distribución territorial de estatus; no son prevalencia, incidencia ni riesgo.</li>
-      <li><code>FEC_ACT</code> es la fecha de actualización del estatus; no es la fecha de diagnóstico, notificación o confirmación.</li>
-      <li>Departamento y gerencia seccional se presentan en correspondencia 1 a 1 para el prototipo. Bogotá, D.C. aparece como unidad propia porque así viene en la fuente; su correspondencia seccional debe confirmarse.</li>
-      <li>El módulo Nacional abre con la primera enfermedad del filtro (orden: control oficial, vigilancia especial y no listadas; alfabético dentro de cada grupo). El módulo Departamento abre con Antioquia (código 05), lista los departamentos por código DANE y usa solo los filtros de departamento y municipio.</li>
-      <li>Simbología alineada con la capa del Geoportal: «Con presencia» en rojo y todo estado que contenga «libre» en verde. La zona o condición de vacunación se lee en la ventana emergente, la leyenda y la tabla.</li>
-      
-    </ul>
-  </details>
-  <details><summary>Arquitectura, ejecución y limitaciones</summary>
-    <ul>
-      <li>Archivo HTML autónomo con la identidad visual del ICA (Manual de Identidad Visual 2024): JavaScript sin compilación, Leaflet 1.9.4 para el mapa, gráficos en HTML/CSS. Un único modelo de datos en memoria alimenta mapa, indicadores, gráficos y tabla.</li>
-      <li>Consultas: 1 a la estructura de la capa, 2 de conteo, ${Math.ceil(S.counts.enf/CFG.pageSize)} páginas de atributos sin geometría y 1 de geometrías GeoJSON (una por municipio). Los filtros se resuelven en el navegador, sin nuevas consultas.</li>
-      <li>Ejecución: abrir el archivo en un navegador moderno con acceso a internet (services9.arcgis.com, cdnjs, Google Fonts, teselas de OpenStreetMap y Esri). Para publicarlo, copiarlo a cualquier servidor web; no requiere servidor de aplicaciones.</li>
-      <li>Mapas base: OpenStreetMap (por defecto) y satélite (Esri World Imagery, con topónimos opcionales). Si el tablero se abre como archivo local, OpenStreetMap se sirve desde OpenStreetMap France, porque tile.openstreetmap.org bloquea las peticiones sin página de origen; publicado en un servidor web usa tile.openstreetmap.org. Para uso intensivo conviene un servicio de teselas institucional.</li>
-      <li>Límites administrativos del módulo departamental: servicio MGN 2025 del DANE (<code>Serv_CapasMGN_2025/MapServer</code>, capas 319 Departamento y 317 Municipio). El servicio no entrega geometrías en sus consultas, por eso los límites se dibujan con su operación <code>export</code> y simbología propia (<code>dynamicLayers</code>); la extensión y la selección por clic usan consultas sin geometría (JSONP, porque el servidor no habilita CORS). La información sanitaria sigue saliendo solo del servicio del ICA.</li>
-      <li>Correspondencia de códigos: al elegir un departamento se compara la lista de municipios del DANE (MPIO_CDPMP) con la de la capa del ICA (COD_MUN) y se informan las diferencias en la ficha.</li>
-      <li>Exportación de registros a Excel (.xlsx, librería SheetJS cargada al exportar) y CSV, con los filtros del módulo Nacional y la búsqueda de la tabla.</li>
-      <li>Sin conexión con el servicio el tablero no muestra cifras; no hay datos simulados.</li>
-      <li>La relación departamento–seccional y la clasificación normativa son tablas de configuración en el código (<code>NORMA</code>, <code>seccional()</code>); actualícelas si cambia la resolución o la estructura institucional.</li>
+      <li>«Libre» se muestra solo cuando el ICA lo reporta, incluidas las zonas libres de fiebre aftosa con y sin vacunación. Un municipio sin información no se considera libre.</li>
+      <li>Las cifras describen la distribución territorial del estatus sanitario; no son prevalencia, incidencia ni riesgo epidemiológico.</li>
+      <li>La fecha de actualización corresponde al estatus; no es la fecha de diagnóstico, notificación o confirmación de un evento sanitario.</li>
+      <li>Cada departamento corresponde a una gerencia seccional del ICA. Bogotá, D.C. se presenta como unidad propia.</li>
+      <li>Colores: rojo para «Con presencia», verde para «Libre» y gris para municipios sin información en la consulta.</li>
     </ul>
   </details>`;
-  $("#foot").innerHTML = `Fuente: ICA, servicio ArcGIS <span class="mono">ICA_EPXXX_Pg</span> (capa 0), consultado el ${S.loadedAt.toLocaleString("es-CO")} · Clasificación: Resolución ICA 00018426 del 21/08/2025 · Prototipo de tablero; cifras derivadas de la capa sin correcciones manuales.`;
 }
 
 /* ================= Tooltips ================= */
