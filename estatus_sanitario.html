@@ -1225,18 +1225,20 @@ function renderDistribucion(o){
   const dis = [...by.entries()].map(([k,s])=>({k, s, tot:s.mun.size, otro:s.mun.size - s.pres.size - s.libre.size}))
     .sort((a,b)=>(pct ? b.s.pres.size/b.tot - a.s.pres.size/a.tot : b.s.pres.size - a.s.pres.size) || a.k.localeCompare(b.k,"es"));
   const max = pct ? 100 : Math.max(0,...dis.map(x=>x.tot));
-  const markR = o.mark ? new Map(o.recs.filter(r=>r.codMun===o.mark).map(r=>[r.dis, r])) : null;
-  $("#"+o.id+"sub").textContent = (pct ? `Porcentaje de municipios${o.scope} de cada enfermedad según su estado (barras al 100 %).` : `Municipios${o.scope} de cada enfermedad: rojo con presencia, verde sin presencia (libre). Valor: con presencia / total.`)
-    + (o.markName ? ` El punto junto a cada enfermedad indica el estado en ${o.markName}.` : "") + (o.select ? " Clic para seleccionar la enfermedad." : "");
+  // Modo municipal: un solo municipio, cada barra muestra el estado de la enfermedad en ese municipio
+  const munR = o.mun ? new Map(o.recs.map(r=>[r.dis, r])) : null;
+  $("#"+o.id+"sub").textContent = o.mun
+    ? `Estado de cada enfermedad en ${o.mun}: rojo con presencia, verde libre. Las enfermedades con presencia aparecen primero; el detalle está en la ficha del municipio.`
+    : (pct ? `Porcentaje de municipios${o.scope} de cada enfermedad según su estado (barras al 100 %).` : `Municipios${o.scope} de cada enfermedad: rojo con presencia, verde sin presencia (libre). Valor: con presencia / total.`)
+      + (o.select ? " Clic para seleccionar la enfermedad." : "");
   $("#"+o.id+"l").innerHTML = legendHTML([["Con presencia", presC],["Sin presencia (libre)", libC]].concat(dis.some(x=>x.otro>0)?[["Otro estado", otroC]]:[]));
   el.innerHTML = barsHTML(dis.map(x=>{ const f = v => pct ? (x.tot ? v/x.tot*100 : 0) : v;
-    const mr = markR && markR.get(x.k);
-    const dot = mr ? `<i class="dot" style="background:var(${CATS.find(c=>c.k===mr.cat2).v});margin:0 6px 0 0" aria-hidden="true"></i>` : "";
+    const mr = munR && munR.get(x.k);
     return {key:x.k, click:!!o.select, on:o.selDis===x.k, dim:o.selDis && o.selDis!==x.k,
-      labelHTML:`${dot}${esc(x.k)}<span class="tag ${clasOf(x.k)}">${CLAS_TAG[clasOf(x.k)]}</span>`,
+      labelHTML:`${esc(x.k)}<span class="tag ${clasOf(x.k)}">${CLAS_TAG[clasOf(x.k)]}</span>`,
       segs:[{v:f(x.s.pres.size), c:presC},{v:f(x.s.libre.size), c:libC}].concat(x.otro>0?[{v:f(x.otro), c:otroC}]:[]),
-      valTxt: pct ? fmtP(x.s.pres.size, x.tot) : `${fmtN(x.s.pres.size)} / ${fmtN(x.tot)}`,
-      tip:`${x.k} · ${CLAS[clasOf(x.k)]}: con presencia ${fmtN(x.s.pres.size)} (${fmtP(x.s.pres.size,x.tot)}) · sin presencia (libre) ${fmtN(x.s.libre.size)} (${fmtP(x.s.libre.size,x.tot)})` + (x.otro>0?` · otro estado ${fmtN(x.otro)}`:"") + ` · total ${fmtN(x.tot)} municipios.` + (mr ? ` ${o.markName}: ${mr.est}.` : "")}; }), {max, onClickAttr:"data-dis"});
+      valTxt: mr ? (mr.cat2==="pres" ? "Presencia" : mr.cat2==="libre" ? "Libre" : "Otro") : pct ? fmtP(x.s.pres.size, x.tot) : `${fmtN(x.s.pres.size)} / ${fmtN(x.tot)}`,
+      tip:`${x.k} · ${CLAS[clasOf(x.k)]}: con presencia ${fmtN(x.s.pres.size)} (${fmtP(x.s.pres.size,x.tot)}) · sin presencia (libre) ${fmtN(x.s.libre.size)} (${fmtP(x.s.libre.size,x.tot)})` + (x.otro>0?` · otro estado ${fmtN(x.otro)}`:"") + ` · total ${fmtN(x.tot)} municipios.`, ...(mr ? {tip:`${x.k} en ${o.mun}: ${mr.est} · actualización ${fmtD(mr.fec)} · ${mr.fue}.`} : {})}; }), {max, onClickAttr:"data-dis"});
   if(o.select) el.querySelectorAll("[data-dis]").forEach(b=>b.addEventListener("click", ()=>o.select(b.dataset.dis)));
 }
 // Antigüedad de la información (Departamento): registros del ámbito por fecha de actualización
@@ -1415,7 +1417,7 @@ function renderDoc(){
       <li><strong>Distribución por enfermedad</strong> = municipios distintos «Con presencia» y municipios distintos con estado que contiene «libre».</li>
       <li><strong>Última actualización</strong> = máximo de <code>FEC_ACT</code> (zona horaria de Bogotá).</li>
       <li><strong>Mapa nacional</strong> = estado de la enfermedad seleccionada en cada municipio; si hubiera varios registros, prevalece «Con presencia». Sin enfermedad seleccionada, el mapa no se colorea.</li>
-      <li><strong>Indicadores de municipios y departamentos</strong> = barra segmentada por estado de la enfermedad seleccionada (con presencia, libre, otro estado) sobre el universo territorial; el gris son unidades sin registro en la selección y no se interpreta como «Libre». Un departamento es «Libre» solo si todos sus municipios con registro son libres. <strong>Distribución en Departamento</strong> = municipios del departamento por enfermedad y estado; con un municipio seleccionado se señala su estado sobre la distribución departamental.</li>
+      <li><strong>Indicadores de municipios y departamentos</strong> = barra segmentada por estado de la enfermedad seleccionada (con presencia, libre, otro estado) sobre el universo territorial; el gris son unidades sin registro en la selección y no se interpreta como «Libre». Un departamento es «Libre» solo si todos sus municipios con registro son libres. <strong>Distribución en Departamento</strong> = municipios del departamento por enfermedad y estado; con un municipio seleccionado muestra el estado de cada enfermedad en ese municipio.</li>
       <li>Categorías de estado: «Con presencia» (rojo) y todo valor que contenga «libre» (verde), incluidas las zonas de fiebre aftosa con y sin vacunación. El texto completo de <code>ESTADO</code> se conserva en filtros, tabla y exportación.</li>
     </ul>
   </details>
@@ -1471,10 +1473,10 @@ function doRender(){
   S.RD = S.d.mun ? RD.filter(r=>r.codMun===S.d.mun) : RD;     // registros de la tabla departamental
   if(S.d.dep!==S.headDep){ S.headDep = S.d.dep; renderDepHead(); }
   renderDepFicha(RD);
-  // Distribución en Departamento: municipios del departamento; con un municipio, se conserva la distribución
-  // departamental y se señala el estado de ese municipio (un solo municipio no forma una distribución).
+  // Distribución en Departamento: municipios del departamento; con un municipio, estado de cada enfermedad en ese municipio.
   const dn = (S.DEP.get(S.d.dep)||{}).name, mn = (S.MUN.get(S.d.mun)||{}).name;
-  renderDistribucion({id:"g2d", mode:"g2d", recs:RD, scope: dn ? ` de ${dn}` : "", mark:S.d.mun, markName:mn});
+  renderDistribucion({id:"g2d", mode:"g2d", recs: S.d.mun ? RD.filter(r=>r.codMun===S.d.mun) : RD, scope: dn ? ` de ${dn}` : "", mun: S.d.mun ? mn : ""});
+  $("#p-departamento [data-g=g2d]").parentElement.hidden = !!S.d.mun;   // Cantidad / % no aplica a un solo municipio
   renderTables();
   if(S.tab==="departamento") renderDepMap();
   if(!renderDoc.done){ renderDoc(); renderDoc.done = true; }
